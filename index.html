@@ -88,7 +88,32 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
  function send(action,data){return new Promise((resolve,reject)=>{const id=String(++requestId);pending[id]={resolve,reject};bridge.contentWindow.postMessage({source:'MPL_GITHUB_ADMIN',id,action,data},endpointOrigin);setTimeout(()=>{if(pending[id]){delete pending[id];reject(new Error('The secure connection timed out. Reload the page and try again.'));}},20000);});}
  openBtn.addEventListener('click',()=>{panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});pinInput.focus();});
  closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
- window.addEventListener('message',event=>{if(event.origin!=='https://script.google.com' && event.origin!=='https://script.googleusercontent.com')return;const d=event.data;if(!d||d.source!=='MPL_APPS_SCRIPT_BRIDGE'||!pending[String(d.id)])return;const p=pending[String(d.id)];delete pending[String(d.id)];d.success?p.resolve(d.result):p.reject(new Error(d.message||'Request failed.'));});
+ 
+window.addEventListener('message', event => {
+  const allowedOrigin =
+    event.origin === 'https://script.google.com' ||
+    event.origin.endsWith('.googleusercontent.com');
+
+  // Accept responses only from the embedded Apps Script bridge.
+  if (!allowedOrigin || event.source !== bridge.contentWindow) return;
+
+  const d = event.data;
+  if (
+    !d ||
+    d.source !== 'MPL_APPS_SCRIPT_BRIDGE' ||
+    !pending[String(d.id)]
+  ) return;
+
+  const p = pending[String(d.id)];
+  delete pending[String(d.id)];
+
+  if (d.success) {
+    p.resolve(d.result);
+  } else {
+    p.reject(new Error(d.message || 'Request failed.'));
+  }
+});
+
  form.addEventListener('submit',async e=>{e.preventDefault();const pin=pinInput.value.trim();if(!pin)return;msg.textContent='Verifying PIN and loading registrations…';results.style.display='none';document.getElementById('organiserLoadBtn').disabled=true;
  try{const res=await send('list',{pin});if(!res||!res.success)throw new Error(res&&res.message||'Access denied.');sessionPin=pin;render(res.rows||[]);msg.textContent='Access verified. '+(res.rows||[]).length+' registration(s) loaded.';}
  catch(err){sessionPin='';msg.textContent=err.message||'Unable to verify access. Check deployment and try again.';}
