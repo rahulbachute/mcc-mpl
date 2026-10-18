@@ -33,7 +33,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
 <h2>Welcome, Metropolitan cricket enthusiasts!</h2>
 <p>Metropolitan Cricket Club invites residents to register for MPL-2026. Please use the official registration form to provide player details, date of birth, cricketing skills and jersey preferences.</p>
 <div class="note"><strong>Register through the official form.</strong><br>The form calculates age as of 15 November 2026 and selects the eligible category based on the details entered. Please check all information before submitting.</div>
-<a class="cta" href="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec?view=bridge" target="_blank" rel="noopener">Register Now ↗</a>
+<a class="cta" href="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec" target="_blank" rel="noopener">Register Now ↗</a>
 <button class="organiser-review-inline" type="button" id="openOrganiserReview" aria-label="Organiser Review">Organiser Review ↗</button>
 <p class="help">The registration form opens in Google Apps Script. Complete and submit your registration there; this GitHub page is for tournament information.</p>
 <h2 style="margin-top:26px">Before you register</h2>
@@ -72,45 +72,29 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
     <div id="organiserRegistrationResults" style="display:none;overflow:auto;max-width:100%"></div>
   </div>
 </section>
-<iframe id="mplAdminBridge" title="Secure organiser verification bridge"
-  aria-hidden="true"
-  style="position:absolute;width:1px;height:1px;left:-10000px;border:0"
-  src="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec?view=bridge"></iframe>
 
 <footer>Metropolitan Cricket Club · MPL-2026</footer>
 
 <script>
 (function(){
  const panel=document.getElementById('organiserReviewPanel'), openBtn=document.getElementById('openOrganiserReview'), closeBtn=document.getElementById('closeOrganiserReview');
- const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults'), bridge=document.getElementById('mplAdminBridge');
- const endpointOrigin='https://rahulbachute.github.io';
- let requestId=0, pending={}, sessionPin='', rowsByNumber={};
- function send(action,data){return new Promise((resolve,reject)=>{const id=String(++requestId);pending[id]={resolve,reject};bridge.contentWindow.postMessage({source:'MPL_GITHUB_ADMIN',id,action,data},endpointOrigin);setTimeout(()=>{if(pending[id]){delete pending[id];reject(new Error('The secure connection timed out. Reload the page and try again.'));}},20000);});}
+ const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults');
+ const API='https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec';
+ let sessionPin='', rowsByNumber={};
+ async function send(action,data){
+  const ctrl=new AbortController(), t=setTimeout(()=>ctrl.abort(),30000);
+  try{
+   const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action:action},data)),signal:ctrl.signal});
+   if(!r.ok)throw new Error('Server error '+r.status);
+   return await r.json();
+  }catch(err){
+   if(err&&err.name==='AbortError')throw new Error('The server took too long to respond. Please try again.');
+   if(err instanceof TypeError)throw new Error('Could not reach the server. Check that the web app is deployed with access set to "Anyone".');
+   throw err;
+  }finally{clearTimeout(t);}
+ }
  openBtn.addEventListener('click',()=>{panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});pinInput.focus();});
  closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
- 
-window.addEventListener('message', event => {
-  // Accept messages only from Google-hosted Apps Script bridge origins.
-  const allowedOrigin =
-    event.origin === 'https://script.google.com' ||
-    event.origin.endsWith('.googleusercontent.com');
-  if (!allowedOrigin) return;
-
-  const d = event.data;
-  if (!d || d.source !== 'MPL_APPS_SCRIPT_BRIDGE') return;
-
-  const id = String(d.id || '');
-  const p = pending[id];
-  if (!p) return;
-
-  delete pending[id];
-  if (d.success) {
-    p.resolve(d.result);
-  } else {
-    p.reject(new Error(d.message || 'Request failed.'));
-  }
-});
-
  form.addEventListener('submit',async e=>{e.preventDefault();const pin=pinInput.value.trim();if(!pin)return;msg.textContent='Verifying PIN and loading registrations…';results.style.display='none';document.getElementById('organiserLoadBtn').disabled=true;
  try{const res=await send('list',{pin});if(!res||!res.success)throw new Error(res&&res.message||'Access denied.');sessionPin=pin;render(res.rows||[]);msg.textContent='Access verified. '+(res.rows||[]).length+' registration(s) loaded.';}
  catch(err){sessionPin='';msg.textContent=err.message||'Unable to verify access. Check deployment and try again.';}
