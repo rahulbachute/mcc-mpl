@@ -85,7 +85,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
  const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults'), bridge=document.getElementById('mplAdminBridge');
  const endpointOrigin='https://rahulbachute.github.io';
  let requestId=0, pending={}, sessionPin='', rowsByNumber={};
- function send(action,data){return new Promise((resolve,reject)=>{const id=String(++requestId);pending[id]={resolve,reject};bridge.contentWindow.postMessage({source:'MPL_GITHUB_ADMIN',id,action,data},endpointOrigin);setTimeout(()=>{if(pending[id]){delete pending[id];reject(new Error('The secure connection timed out. Reload the page and try again.'));}},20000);});}
+ function send(action,data){return new Promise((resolve,reject)=>{const id=String(++requestId);pending[id]={resolve,reject};/* Apps Script may serve the iframe from a googleusercontent.com origin after redirect; the bridge validates the sender origin and message before processing. */bridge.contentWindow.postMessage({source:'MPL_GITHUB_ADMIN',id,action,data},'*');setTimeout(()=>{if(pending[id]){delete pending[id];reject(new Error('The secure connection timed out. Reload the page and try again.'));}},20000);});}
  openBtn.addEventListener('click',()=>{panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});pinInput.focus();});
  closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
  
