@@ -26,14 +26,14 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
 <div class="fx"><b>5 &amp; 6 Dec</b><small>Boys 15–30; Men's 31+</small></div>
 <div class="fx final"><b>6 Dec</b><small>Finals, all categories</small></div>
 </div>
-<div class="closing">Registrations close on 10 November 2026</div>
+<div class="closing">Registrations close on 15 November 2026</div>
 </header>
 <main>
 <section class="panel">
 <h2>Welcome, Metropolitan cricket enthusiasts!</h2>
 <p>Metropolitan Cricket Club invites residents to register for MPL-2026. Please use the official registration form to provide player details, date of birth, cricketing skills and jersey preferences.</p>
 <div class="note"><strong>Register through the official form.</strong><br>The form calculates age as of 15 November 2026 and selects the eligible category based on the details entered. Please check all information before submitting.</div>
-<a class="cta" href="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec?view=bridge" target="_blank" rel="noopener">Register Now ↗</a>
+<a class="cta" href="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec" target="_blank" rel="noopener">Register Now ↗</a>
 <button class="organiser-review-inline" type="button" id="openOrganiserReview" aria-label="Organiser Review">Organiser Review ↗</button>
 <p class="help">The registration form opens in Google Apps Script. Complete and submit your registration there; this GitHub page is for tournament information.</p>
 <h2 style="margin-top:26px">Before you register</h2>
@@ -72,79 +72,42 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
     <div id="organiserRegistrationResults" style="display:none;overflow:auto;max-width:100%"></div>
   </div>
 </section>
-<iframe id="mplAdminBridge" title="Secure organiser verification bridge"
-  aria-hidden="true"
-  style="position:absolute;width:1px;height:1px;left:-10000px;border:0"
-  src="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec?view=bridge"></iframe>
 
 <footer>Metropolitan Cricket Club · MPL-2026</footer>
 
 <script>
 (function(){
  const panel=document.getElementById('organiserReviewPanel'), openBtn=document.getElementById('openOrganiserReview'), closeBtn=document.getElementById('closeOrganiserReview');
- const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults'), bridge=document.getElementById('mplAdminBridge');
- const endpointOrigin='https://rahulbachute.github.io';
- let requestId=0, pending={}, sessionPin='', rowsByNumber={};
- function send(action,data){return new Promise((resolve,reject)=>{const id=String(++requestId);pending[id]={resolve,reject};/* Apps Script may serve the iframe from a googleusercontent.com origin after redirect; the bridge validates the sender origin and message before processing. */bridge.contentWindow.postMessage({source:'MPL_GITHUB_ADMIN',id,action,data},'*');setTimeout(()=>{if(pending[id]){delete pending[id];reject(new Error('The secure connection timed out. Reload the page and try again.'));}},20000);});}
+ const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults');
+ const API='https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec';
+ let sessionPin='', rowsByNumber={};
+ async function send(action,data){
+  const ctrl=new AbortController(), t=setTimeout(()=>ctrl.abort(),30000);
+  try{
+   const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action:action},data)),signal:ctrl.signal});
+   if(!r.ok)throw new Error('Server error '+r.status);
+   return await r.json();
+  }catch(err){
+   if(err&&err.name==='AbortError')throw new Error('The server took too long to respond. Please try again.');
+   if(err instanceof TypeError)throw new Error('Could not reach the server. Check that the web app is deployed with access set to "Anyone".');
+   throw err;
+  }finally{clearTimeout(t);}
+ }
  openBtn.addEventListener('click',()=>{panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});pinInput.focus();});
  closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
- 
-window.addEventListener('message', event => {
-  // Accept messages only from Google-hosted Apps Script bridge origins.
-  const allowedOrigin =
-    event.origin === 'https://script.google.com' ||
-    event.origin.endsWith('.googleusercontent.com');
-  if (!allowedOrigin) return;
-
-  const d = event.data;
-  if (!d || d.source !== 'MPL_APPS_SCRIPT_BRIDGE') return;
-
-  const id = String(d.id || '');
-  const p = pending[id];
-  if (!p) return;
-
-  delete pending[id];
-  if (d.success) {
-    p.resolve(d.result);
-  } else {
-    p.reject(new Error(d.message || 'Request failed.'));
-  }
-});
-
  form.addEventListener('submit',async e=>{e.preventDefault();const pin=pinInput.value.trim();if(!pin)return;msg.textContent='Verifying PIN and loading registrations…';results.style.display='none';document.getElementById('organiserLoadBtn').disabled=true;
  try{const res=await send('list',{pin});if(!res||!res.success)throw new Error(res&&res.message||'Access denied.');sessionPin=pin;render(res.rows||[]);msg.textContent='Access verified. '+(res.rows||[]).length+' registration(s) loaded.';}
  catch(err){sessionPin='';msg.textContent=err.message||'Unable to verify access. Check deployment and try again.';}
  finally{document.getElementById('organiserLoadBtn').disabled=false;}
  });
  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
- function render(rows){
-  rowsByNumber={};
-  const verified=rows.filter(r=>['Payment Verified','Confirmed'].includes(String(r.status||'')));
-  const tblStyle='border-collapse:collapse;width:100%;min-width:680px;font-size:13px';
-  const thStyle='padding:9px;border-bottom:2px solid #cfd9d1;text-align:left;background:#e4ede6;position:sticky;top:0';
-  const tdStyle='padding:8px;border-bottom:1px solid #cfd9d1;vertical-align:top';
-  const table=(heads,body)=>'<div style="overflow:auto;max-width:100%;margin:12px 0 24px"><table style="'+tblStyle+'"><thead><tr>'+heads.map(x=>'<th style="'+thStyle+'">'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table></div>';
-  const csvCell=v=>'\"'+String(v==null?'':v).replace(/\"/g,'\"\"')+'\"';
-  function exportCsv(filename,heads,data){const csv=[heads,...data].map(row=>row.map(csvCell).join(',')).join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
-  function exportButton(id,label){return '<button type="button" id="'+id+'" style="padding:9px 12px;margin:6px 6px 10px 0;cursor:pointer">'+label+'</button>';}
-  const verifiedHeads=['Registration ID','Player Name','Gender','Category','Mobile','Jersey Name','Jersey Number','T-shirt Size','Status'];
-  const verifiedData=verified.map(r=>[r.registrationId,r.name,r.gender,r.category,r.phone,r.jerseyName,r.jerseyNumber,r.size,r.status]);
-  const tshirtHeads=['Player Name','Gender','T-shirt Size','Preferred T-shirt Number'];
-  const tshirtData=verified.map(r=>[r.name,r.gender,r.size,r.jerseyNumber]);
-  const auctionHeads=['Player Name','Gender','Age','Category','Batter Skill','Bowler Skill','All-Rounder Skill','Fielding Skill','Jersey Name','Preferred Jersey Number','Player Photo URL'];
-  const auctionData=verified.map(r=>[r.name,r.gender,r.age,r.category,r.batter,r.bowler,r.allrounder,r.fielding,r.jerseyName,r.jerseyNumber,r.photoUrl]);
-  let out='<div style="padding:12px;background:#f5f8f5;border:1px solid #cfd9d1;border-radius:8px;margin:12px 0 20px"><strong>Organiser reports</strong><p style="margin:6px 0">'+verified.length+' final player(s) included. Reports include players with status <b>Payment Verified</b> or <b>Confirmed</b>; Pending and Rejected registrations are excluded. After changing a status, reload the list before exporting.</p><h3>1. Final players — payment verified</h3>'+exportButton('mpl-export-verified','Export verified-player list (CSV)')+table(verifiedHeads,verifiedData.map(row=>'<tr>'+row.map(v=>'<td style="'+tdStyle+'">'+esc(v)+'</td>').join('')+'</tr>').join(''))+'<h3>2. T-shirt vendor list</h3><p>Player name, gender, size and preferred T-shirt/jersey number.</p>'+exportButton('mpl-export-tshirt','Export T-shirt vendor list (CSV)')+table(tshirtHeads,tshirtData.map(row=>'<tr>'+row.map(v=>'<td style="'+tdStyle+'">'+esc(v)+'</td>').join('')+'</tr>').join(''))+'<h3>3. Auction player information</h3><p>Player profile, category, skill ratings, jersey details and photo link; contact details are not included.</p>'+exportButton('mpl-export-auction','Export auction player information (CSV)')+table(auctionHeads,auctionData.map(row=>'<tr>'+row.map((v,i)=>'<td style="'+tdStyle+'">'+(i===10&&v?'<a href="'+esc(v)+'" target="_blank" rel="noopener">View photo</a>':esc(v))+'</td>').join('')+'</tr>').join(''))+'</div>';
-  if(!rows.length) out+='<p>No registrations have been submitted yet.</p>';
-  out+='<h3>All registrations and payment-status controls</h3>';
-  let all='<table style="border-collapse:collapse;width:100%;min-width:1100px;font-size:13px"><thead><tr>'+['Reference','Submitted','Player','Category','Wing / Flat','Mobile','Email','Jersey','UPI transaction','Photo','Payment proof','Status','Save'].map(x=>'<th style="'+thStyle+'">'+x+'</th>').join('')+'</tr></thead><tbody>';
-  rows.forEach(r=>{rowsByNumber[r.rowNumber]=r;all+='<tr>'+[r.registrationId,r.timestamp,r.name,r.category,r.wing+' / '+r.flat,r.phone,r.email,r.jerseyName+' #'+r.jerseyNumber+' ('+r.size+')',r.transaction].map(v=>'<td style="'+tdStyle+'">'+esc(v)+'</td>').join('');
-   all+='<td style="'+tdStyle+'">'+(r.photoUrl?'<a target="_blank" rel="noopener" href="'+esc(r.photoUrl)+'">View</a>':'—')+'</td><td style="'+tdStyle+'">'+(r.paymentProofUrl?'<a target="_blank" rel="noopener" href="'+esc(r.paymentProofUrl)+'">View</a>':'—')+'</td>';
-   all+='<td style="'+tdStyle+'"><select id="mpl-status-'+Number(r.rowNumber)+'"><option'+(r.status==='Pending'?' selected':'')+'>Pending</option><option'+(r.status==='Payment Verified'?' selected':'')+'>Payment Verified</option><option'+(r.status==='Confirmed'?' selected':'')+'>Confirmed</option><option'+(r.status==='Rejected'?' selected':'')+'>Rejected</option></select></td><td style="'+tdStyle+'"><button type="button" data-row="'+Number(r.rowNumber)+'" class="mpl-save-status">Save</button></td></tr>';});
-  all+='</tbody></table>';out+='<div style="overflow:auto;max-width:100%">'+all+'</div>';results.innerHTML=out;results.style.display='block';
-  document.getElementById('mpl-export-verified').addEventListener('click',()=>exportCsv('MPL-2026-Verified-Players.csv',verifiedHeads,verifiedData));
-  document.getElementById('mpl-export-tshirt').addEventListener('click',()=>exportCsv('MPL-2026-Tshirt-Vendor-List.csv',tshirtHeads,tshirtData));
-  document.getElementById('mpl-export-auction').addEventListener('click',()=>exportCsv('MPL-2026-Auction-Player-Information.csv',auctionHeads,auctionData));
-  results.querySelectorAll('.mpl-save-status').forEach(btn=>btn.addEventListener('click',async()=>{const row=Number(btn.dataset.row),status=document.getElementById('mpl-status-'+row).value;btn.disabled=true;msg.textContent='Updating registration status…';try{const res=await send('update',{pin:sessionPin,rowNumber:row,status});if(!res||!res.success)throw new Error(res&&res.message||'Status update failed.');msg.textContent='Status updated for '+(res.registrationId||'registration')+'. Reload registrations to refresh the reports.';}catch(err){msg.textContent=err.message||'Could not update status.';}finally{btn.disabled=false;}}));
+ function render(rows){rowsByNumber={};if(!rows.length){results.innerHTML='<p>No registrations have been submitted yet.</p>';results.style.display='block';return;}
+ let out='<table style="border-collapse:collapse;width:100%;min-width:1100px;font-size:13px"><thead><tr>'+['Reference','Submitted','Player','Category','Wing / Flat','Mobile','Email','Jersey','UPI transaction','Photo','Payment proof','Status','Save'].map(x=>'<th style="padding:9px;border-bottom:2px solid #cfd9d1;text-align:left;background:#e4ede6;position:sticky;top:0">'+x+'</th>').join('')+'</tr></thead><tbody>';
+ rows.forEach(r=>{rowsByNumber[r.rowNumber]=r;out+='<tr>'+[r.registrationId,r.timestamp,r.name,r.category,r.wing+' / '+r.flat,r.phone,r.email,r.jerseyName+' #'+r.jerseyNumber+' ('+r.size+')',r.transaction].map(v=>'<td style="padding:8px;border-bottom:1px solid #cfd9d1;vertical-align:top">'+esc(v)+'</td>').join('');
+ out+='<td style="padding:8px;border-bottom:1px solid #cfd9d1">'+(r.photoUrl?'<a target="_blank" rel="noopener" href="'+esc(r.photoUrl)+'">View</a>':'—')+'</td><td style="padding:8px;border-bottom:1px solid #cfd9d1">'+(r.paymentProofUrl?'<a target="_blank" rel="noopener" href="'+esc(r.paymentProofUrl)+'">View</a>':'—')+'</td>';
+ out+='<td style="padding:8px;border-bottom:1px solid #cfd9d1"><select id="mpl-status-'+Number(r.rowNumber)+'"><option'+(r.status==='Pending'?' selected':'')+'>Pending</option><option'+(r.status==='Payment Verified'?' selected':'')+'>Payment Verified</option><option'+(r.status==='Confirmed'?' selected':'')+'>Confirmed</option><option'+(r.status==='Rejected'?' selected':'')+'>Rejected</option></select></td><td style="padding:8px;border-bottom:1px solid #cfd9d1"><button type="button" data-row="'+Number(r.rowNumber)+'" class="mpl-save-status">Save</button></td></tr>';});
+ out+='</tbody></table>';results.innerHTML=out;results.style.display='block';
+ results.querySelectorAll('.mpl-save-status').forEach(btn=>btn.addEventListener('click',async()=>{const row=Number(btn.dataset.row),status=document.getElementById('mpl-status-'+row).value;btn.disabled=true;msg.textContent='Updating registration status…';try{const res=await send('update',{pin:sessionPin,rowNumber:row,status});if(!res||!res.success)throw new Error(res&&res.message||'Status update failed.');msg.textContent='Status updated for '+(res.registrationId||'registration')+'.';}catch(err){msg.textContent=err.message||'Could not update status.';}finally{btn.disabled=false;}}));
  }
 })();
 </script>
