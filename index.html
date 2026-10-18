@@ -34,7 +34,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
 <p>Metropolitan Cricket Club invites residents to register for MPL-2026. Please use the official registration form to provide player details, date of birth, cricketing skills and jersey preferences.</p>
 <div class="note"><strong>Register through the official form.</strong><br>The form calculates age as of 15 November 2026 and selects the eligible category based on the details entered. Please check all information before submitting.</div>
 <a class="cta" href="https://script.google.com/macros/s/AKfycbyjytBadR_8Nj_XO7xu_ZuS_2XcjCbN7XKW1bVa3c8HMRc_aWCbmls59GZOppUmh13R/exec" target="_blank" rel="noopener">Register Now ↗</a>
-<a class="organiser-review-inline" href="https://script.google.com/macros/s/AKfycbyjytBadR_8Nj_XO7xu_ZuS_2XcjCbN7XKW1bVa3c8HMRc_aWCbmls59GZOppUmh13R/exec?view=admin" target="_blank" rel="noopener" aria-label="Organiser Review">Organiser Review ↗</a>
+<button class="organiser-review-inline" type="button" id="openOrganiserReview" aria-label="Organiser Review">Organiser Review ↗</button>
 <p class="help">The registration form opens in Google Apps Script. Complete and submit your registration there; this GitHub page is for tournament information.</p>
 <h2 style="margin-top:26px">Before you register</h2>
 <ol class="steps">
@@ -59,6 +59,49 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
 </aside>
 </main>
 
+
+<section id="organiserReviewPanel" hidden style="max-width:1140px;margin:0 auto 36px;padding:0 20px">
+  <div class="panel" style="border-top-color:var(--ball)">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><h2 style="margin:0">Organiser review</h2><button type="button" id="closeOrganiserReview" style="padding:10px 14px;cursor:pointer">Close</button></div>
+    <p class="help">Authorised MCC organisers only. Enter the review PIN to load registrations.</p>
+    <form id="organiserPinForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+      <div style="flex:1;min-width:220px"><label for="organiserPin">Organiser PIN</label><input id="organiserPin" type="password" autocomplete="current-password" required style="width:100%;padding:12px;border:1px solid var(--line);font:inherit" /></div>
+      <button class="cta" type="submit" id="organiserLoadBtn" style="border:0;cursor:pointer;margin:0">Verify &amp; Load</button>
+    </form>
+    <p id="organiserReviewMessage" role="status" aria-live="polite" class="help"></p>
+    <div id="organiserRegistrationResults" style="display:none;overflow:auto;max-width:100%"></div>
+  </div>
+</section>
+<iframe id="mplAdminBridge" title="Secure organiser verification bridge" aria-hidden="true" style="position:absolute;width:1px;height:1px;left:-10000px;border:0" src="https://script.google.com/macros/s/AKfycbyjytBadR_8Nj_XO7xu_ZuS_2XcjCbN7XKW1bVa3c8HMRc_aWCbmls59GZOppUmh13R/exec?view=bridge"></iframe>
+
 <footer>Metropolitan Cricket Club · MPL-2026</footer>
+
+<script>
+(function(){
+ const panel=document.getElementById('organiserReviewPanel'), openBtn=document.getElementById('openOrganiserReview'), closeBtn=document.getElementById('closeOrganiserReview');
+ const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults'), bridge=document.getElementById('mplAdminBridge');
+ const endpointOrigin='https://rahulbachute.github.io';
+ let requestId=0, pending={}, sessionPin='', rowsByNumber={};
+ function send(action,data){return new Promise((resolve,reject)=>{const id=String(++requestId);pending[id]={resolve,reject};bridge.contentWindow.postMessage({source:'MPL_GITHUB_ADMIN',id,action,data},endpointOrigin);setTimeout(()=>{if(pending[id]){delete pending[id];reject(new Error('The secure connection timed out. Reload the page and try again.'));}},20000);});}
+ openBtn.addEventListener('click',()=>{panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});pinInput.focus();});
+ closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
+ window.addEventListener('message',event=>{if(event.origin!=='https://script.google.com' && event.origin!=='https://script.googleusercontent.com')return;const d=event.data;if(!d||d.source!=='MPL_APPS_SCRIPT_BRIDGE'||!pending[String(d.id)])return;const p=pending[String(d.id)];delete pending[String(d.id)];d.success?p.resolve(d.result):p.reject(new Error(d.message||'Request failed.'));});
+ form.addEventListener('submit',async e=>{e.preventDefault();const pin=pinInput.value.trim();if(!pin)return;msg.textContent='Verifying PIN and loading registrations…';results.style.display='none';document.getElementById('organiserLoadBtn').disabled=true;
+ try{const res=await send('list',{pin});if(!res||!res.success)throw new Error(res&&res.message||'Access denied.');sessionPin=pin;render(res.rows||[]);msg.textContent='Access verified. '+(res.rows||[]).length+' registration(s) loaded.';}
+ catch(err){sessionPin='';msg.textContent=err.message||'Unable to verify access. Check deployment and try again.';}
+ finally{document.getElementById('organiserLoadBtn').disabled=false;}
+ });
+ function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function render(rows){rowsByNumber={};if(!rows.length){results.innerHTML='<p>No registrations have been submitted yet.</p>';results.style.display='block';return;}
+ let out='<table style="border-collapse:collapse;width:100%;min-width:1100px;font-size:13px"><thead><tr>'+['Reference','Submitted','Player','Category','Wing / Flat','Mobile','Email','Jersey','UPI transaction','Photo','Payment proof','Status','Save'].map(x=>'<th style="padding:9px;border-bottom:2px solid #cfd9d1;text-align:left;background:#e4ede6;position:sticky;top:0">'+x+'</th>').join('')+'</tr></thead><tbody>';
+ rows.forEach(r=>{rowsByNumber[r.rowNumber]=r;out+='<tr>'+[r.registrationId,r.timestamp,r.name,r.category,r.wing+' / '+r.flat,r.phone,r.email,r.jerseyName+' #'+r.jerseyNumber+' ('+r.size+')',r.transaction].map(v=>'<td style="padding:8px;border-bottom:1px solid #cfd9d1;vertical-align:top">'+esc(v)+'</td>').join('');
+ out+='<td style="padding:8px;border-bottom:1px solid #cfd9d1">'+(r.photoUrl?'<a target="_blank" rel="noopener" href="'+esc(r.photoUrl)+'">View</a>':'—')+'</td><td style="padding:8px;border-bottom:1px solid #cfd9d1">'+(r.paymentProofUrl?'<a target="_blank" rel="noopener" href="'+esc(r.paymentProofUrl)+'">View</a>':'—')+'</td>';
+ out+='<td style="padding:8px;border-bottom:1px solid #cfd9d1"><select id="mpl-status-'+Number(r.rowNumber)+'"><option'+(r.status==='Pending'?' selected':'')+'>Pending</option><option'+(r.status==='Payment Verified'?' selected':'')+'>Payment Verified</option><option'+(r.status==='Confirmed'?' selected':'')+'>Confirmed</option><option'+(r.status==='Rejected'?' selected':'')+'>Rejected</option></select></td><td style="padding:8px;border-bottom:1px solid #cfd9d1"><button type="button" data-row="'+Number(r.rowNumber)+'" class="mpl-save-status">Save</button></td></tr>';});
+ out+='</tbody></table>';results.innerHTML=out;results.style.display='block';
+ results.querySelectorAll('.mpl-save-status').forEach(btn=>btn.addEventListener('click',async()=>{const row=Number(btn.dataset.row),status=document.getElementById('mpl-status-'+row).value;btn.disabled=true;msg.textContent='Updating registration status…';try{const res=await send('update',{pin:sessionPin,rowNumber:row,status});if(!res||!res.success)throw new Error(res&&res.message||'Status update failed.');msg.textContent='Status updated for '+(res.registrationId||'registration')+'.';}catch(err){msg.textContent=err.message||'Could not update status.';}finally{btn.disabled=false;}}));
+ }
+})();
+</script>
+
 </body>
 </html>
