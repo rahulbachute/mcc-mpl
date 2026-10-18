@@ -90,23 +90,20 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
  closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
  
 window.addEventListener('message', event => {
+  // Accept messages only from Google-hosted Apps Script bridge origins.
   const allowedOrigin =
     event.origin === 'https://script.google.com' ||
     event.origin.endsWith('.googleusercontent.com');
-
-  // Accept responses only from the embedded Apps Script bridge.
-  if (!allowedOrigin || event.source !== bridge.contentWindow) return;
+  if (!allowedOrigin) return;
 
   const d = event.data;
-  if (
-    !d ||
-    d.source !== 'MPL_APPS_SCRIPT_BRIDGE' ||
-    !pending[String(d.id)]
-  ) return;
+  if (!d || d.source !== 'MPL_APPS_SCRIPT_BRIDGE') return;
 
-  const p = pending[String(d.id)];
-  delete pending[String(d.id)];
+  const id = String(d.id || '');
+  const p = pending[id];
+  if (!p) return;
 
+  delete pending[id];
   if (d.success) {
     p.resolve(d.result);
   } else {
