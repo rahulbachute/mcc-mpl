@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Metropolitan Premier League (MPL-2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--turf:#0d3b2b;--turf2:#145238;--grass:#e4ede6;--ball:#c1272d;--chalk:#f6f8f5;--ink:#15221c;--muted:#5d6b63;--line:#cfd9d1;--lime:#d8e86a;--disp:'Oswald','Arial Narrow',Impact,sans-serif;--body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--grass);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+a{color:var(--ball);font-weight:600}
+/* Hero */
+header{background:var(--turf);color:#fff;position:relative;overflow:hidden}
+header:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#ffffff08 0 64px,transparent 64px 128px)}
+.hero{position:relative;max-width:1140px;margin:0 auto;padding:44px 20px 30px}
+.club{font-weight:600;color:var(--lime);font-size:.95rem;letter-spacing:.04em}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(2.2rem,7vw,4.6rem);line-height:1;margin:10px 0 8px;text-transform:uppercase;letter-spacing:.01em}
+h1 span{display:block;color:var(--lime)}
+.sub{margin:0;color:#c8d9cf;max-width:52ch}
+.fixtures{position:relative;max-width:1140px;margin:0 auto;padding:0 20px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.fx{border-left:4px solid var(--ball);background:#ffffff12;padding:10px 14px}
+.fx b{display:block;font-family:var(--disp);font-size:1.35rem;font-weight:500;line-height:1.1}
+.fx small{color:#c8d9cf;font-size:.85rem}
+.fx.final{border-color:var(--lime)}
+.closing{background:var(--ball);color:#fff;text-align:center;font-weight:700;padding:8px 14px;font-size:.95rem;position:relative}
+/* Layout */
+main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:28px;align-items:start}
+.sheet{background:var(--chalk);border-top:6px solid var(--turf);box-shadow:0 2px 0 var(--line),0 24px 40px -28px #0d3b2b66;padding:8px 28px 28px;min-width:0}
+.intro{margin:20px 0 4px;padding:0 0 18px;border-bottom:2px dashed var(--line);color:var(--muted)}
+.intro strong{color:var(--ink)}
+section.step{padding:26px 0 6px;border-bottom:1px solid var(--line)}
+section.step:last-of-type{border-bottom:0}
+.step-h{display:flex;align-items:baseline;gap:14px;margin:0 0 18px}
+.step-h .n{font-family:var(--disp);font-size:2.6rem;line-height:.8;color:var(--ball);font-weight:700}
+h2{font-family:var(--disp);font-weight:500;text-transform:uppercase;letter-spacing:.03em;font-size:1.5rem;margin:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.full{grid-column:1/-1}
+.field{margin:0 0 16px;min-width:0}
+label{display:block;font-weight:700;font-size:.92rem;margin-bottom:5px}
+input,select{font:inherit;width:100%;padding:11px 12px;border:1.5px solid #b9c6bc;border-radius:3px;background:#fff;color:var(--ink);min-height:46px}
+input[type=file]{padding:9px;background:var(--grass);border-style:dashed}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--lime);outline-offset:1px;border-color:var(--turf)}
+.help{font-size:.84rem;color:var(--muted);margin:5px 0 0;line-height:1.4}
+.notice{background:#fff;border-left:5px solid var(--ball);padding:12px 14px;margin:6px 0 18px;font-size:.93rem}
+.notice ol{margin:8px 0 0;padding-left:20px}.notice li{margin:3px 0}
+.fee{display:flex;align-items:center;gap:16px;background:var(--turf);color:#fff;padding:14px 18px;margin:0 0 18px}
+.fee .amt{font-family:var(--disp);font-size:2.4rem;font-weight:700;color:var(--lime);line-height:1}
+.fee p{margin:0;font-size:.93rem;color:#d3e2d9}
+.pay{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;border:1.5px solid var(--line);background:#fff;padding:16px;margin:0 0 18px}
+.pay img{width:170px;max-width:100%;height:auto;display:block}
+.upi{font-weight:700;overflow-wrap:anywhere}
+.contact{margin:0}
+button[type=submit]{width:100%;border:0;background:var(--ball);color:#fff;font-family:var(--disp);font-weight:500;font-size:1.2rem;letter-spacing:.06em;text-transform:uppercase;padding:15px;cursor:pointer;border-radius:3px;margin-top:6px;transition:background .15s}
+button[type=submit]:hover{background:#a11f25}
+.fine{font-size:.85rem;color:var(--muted);margin:18px 0 0}
+/* Jersey */
+.preview{position:sticky;top:16px;background:var(--turf);color:#fff;padding:20px;min-width:0}
+.preview h2{color:#fff;font-size:1.2rem;margin-bottom:2px}
+.preview .tag{margin:0 0 12px;color:var(--lime);font-size:.88rem;font-weight:600}
+.jersey-wrap{background:radial-gradient(circle at 50% 35%,#1d6b49,#0a2c20);display:flex;justify-content:center;padding:16px;min-height:340px;align-items:center}
+.jersey{width:min(100%,330px);filter:drop-shadow(0 14px 14px #0008)}
+.jersey-name{font-weight:700;font-family:var(--disp);font-size:17px;letter-spacing:2px;fill:#fff}
+.jersey-number{font-weight:700;font-family:var(--disp);font-size:92px;fill:#fff}
+.preview-note{font-size:.85rem;color:#b9cfc2;margin:12px 0 0;text-align:center}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 18px 28px}
+@media(max-width:860px){main{grid-template-columns:1fr}.preview{position:static;grid-row:1}.fixtures{grid-template-columns:1fr 1fr}.jersey-wrap{min-height:280px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.sheet{padding:4px 16px 22px}.pay{grid-template-columns:1fr;text-align:center}.pay img{margin:0 auto}}
+</style></head>
+<body>
+<header>
+<div class="hero"><div class="club">Metropolitan Cricket Club presents</div><h1>The Metropolitan <span>Premier League 2026</span></h1><p class="sub">Player registration and jersey personalisation for every wing, every age group.</p></div>
+<div class="fixtures">
+<div class="fx"><b>28 Nov</b><small>Boys, 8 to below 15</small></div>
+<div class="fx"><b>29 Nov</b><small>Girls 8 to below 15, Women's 15+</small></div>
+<div class="fx"><b>5 &amp; 6 Dec</b><small>Boys 15–30, Men's 31+</small></div>
+<div class="fx final"><b>6 Dec</b><small>Finals, all categories</small></div>
+</div>
+<div class="closing">Registrations close on 15 November 2026</div>
+</header>
+<main>
+<div class="sheet">
+<div class="intro"><strong>Dear Cricket enthusiasts of Metropolitan,</strong> please fill out this form to register in the correct category to participate in MPL 2026. Check your details and payment information before submitting.</div>
+<form id="mplForm">
+<section class="step"><div class="step-h"><span class="n">1</span><h2>Player details</h2></div>
+<div class="grid">
+<div class="field full"><label for="email">Email address *</label><input id="email" name="email" type="email" required autocomplete="email" placeholder="Your email"></div>
+<div class="field full"><label for="playerName">Participant full name *</label><input id="playerName" name="playerName" required placeholder="Your full name" autocomplete="name"></div>
+<div class="field"><label for="wing">The Metropolitan – Wing *</label><select id="wing" name="wing" required><option value="">Choose wing</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option></select></div>
+<div class="field"><label for="flat">Flat number *</label><select id="flat" name="flat" required><option value="">Choose flat number</option><script>for(let floor=1;floor<=12;floor++){for(let n=1;n<=4;n++){document.write(`<option>${floor}0${n}</option>`)}}</script></select></div>
+<div class="field"><label for="phone">Mobile number *</label><input id="phone" name="phone" type="tel" required autocomplete="tel" placeholder="Mobile number"></div>
+<div class="field"><label for="age">Age on 30 November 2026 *</label><input id="age" name="age" type="number" min="1" max="110" required placeholder="Age on 30 November 2026"></div>
+<div class="field full"><label for="category">Category *</label><select id="category" name="category" required><option value="">Choose category</option><option value="Boys - 8 yrs to below 15 yrs">Boys – 8 yrs to below 15 yrs · Match: 28 Nov 2026</option><option value="Girls - 8 yrs to below 15 yrs">Girls – 8 yrs to below 15 yrs · Match: 29 Nov 2026</option><option value="Women's - 15 yrs and above">Women's – 15 yrs and above · Match: 29 Nov 2026</option><option value="Boys - 15 yrs to 30 yrs">Boys – 15 yrs to 30 yrs · Match: 05 Dec 2026</option><option value="Men's - 31 yrs and above">Men's – 31 yrs and above · Match: 05 &amp; 06 Dec 2026 (cap: 48 players)</option></select><p class="help">Pick the category that matches your age on 30 November 2026. Final matches for all categories are on 06 December 2026.</p></div>
+</div></section>
+
+<section class="step"><div class="step-h"><span class="n">2</span><h2>Cricketing skills</h2></div>
+<div class="grid">
+<div class="field"><label for="batter">Batter *</label><select id="batter" name="batter" required><option value="">Choose</option><option>Opener</option><option>Middle Order</option><option>Tail-ender</option></select></div>
+<div class="field"><label for="bowler">Bowler *</label><select id="bowler" name="bowler" required><option value="">Choose</option><option>Excellent</option><option>Average</option><option>Not a good bowler</option></select></div>
+<div class="field"><label for="allrounder">All Rounder *</label><select id="allrounder" name="allrounder" required><option value="">Choose</option><option>Good Batsman who can Bowl</option><option>Good Bowler who can Bat</option><option>NA</option></select></div>
+<div class="field"><label for="fielding">Fielding *</label><select id="fielding" name="fielding" required><option value="">Choose</option><option>Boundary Fielder</option><option>Close Catching position</option></select></div>
+</div></section>
+
+<section class="step"><div class="step-h"><span class="n">3</span><h2>Jersey</h2></div>
+<div class="grid">
+<div class="field"><label for="jerseyName">Name to print on jersey *</label><input id="jerseyName" name="jerseyName" required maxlength="16" placeholder="e.g. SANJAY" autocomplete="off"><p class="help">Up to 16 characters. The preview updates as you type.</p></div>
+<div class="field"><label for="jerseyNumber">Preferred jersey number *</label><select id="jerseyNumber" name="jerseyNumber" required><option value="">Choose number</option><script>for(let i=0;i<=99;i++){document.write(`<option value="${i}">${i}</option>`)}</script></select><p class="help">Organisers will confirm number availability.</p></div>
+<div class="field"><label for="size">Jersey size *</label><select id="size" name="size" required><option value="">Choose size</option><option>22</option><option>24</option><option>26</option><option>28</option><option>30</option><option>32</option><option>34</option><option>36</option><option>M - 38</option><option>L - 40</option><option>XL - 42</option><option>2XL - 44</option><option>3XL - 46</option><option>4XL - 48</option></select></div>
+<div class="field"><label for="playerPhoto">Player photograph <span id="photoHint">(required for Men's and Boys 15–30)</span></label><input id="playerPhoto" name="playerPhoto" type="file" accept="image/*"><p class="help">Required for Men's (31+) and Boys (15–30). Choose a clear image from your device.</p></div>
+</div></section>
+
+<section class="step"><div class="step-h"><span class="n">4</span><h2>Fee and payment</h2></div>
+<div class="fee"><div class="amt">₹700</div><p>Registration fee includes your jersey and refreshments. Scan the QR code, then enter the UPI transaction ID below.</p></div>
+<div class="pay"><img src="https://docs.google.com/forms-images-rt/ANbbkiiDyKGpfN6T07tC9xZ1lxxrX4ph702oC30z5KJ27NYMuB3y0xkW88LAYDlBPviM7tpyaq-uwbP5VYi5V3wzUtwKC42ZD213eI8PmPwFoawSfYKZCesuTryqV1zI6UFKiQapSOMReg56W5SiLT1ycStJLKjLlFeRZEoECROrBHcFJXEHgz_fr2QrAk42kgEeBx2zoh8g%3Dw283" alt="MPL registration payment QR code for Sujay Khire" loading="lazy">
+<div><strong>Scan to pay ₹700 with any UPI app</strong><div class="upi">UPI ID: sujaykhire114-1@okaxis</div><div class="upi">GPay: +91 97663 63201</div><p class="help">Check the payee and amount in your UPI app before you confirm.</p></div></div>
+<div class="grid">
+<div class="field"><label for="transaction">UPI transaction ID *</label><input id="transaction" name="transaction" required placeholder="Enter payment transaction ID"></div>
+<div class="field"><label for="paymentProof">Payment screenshot (optional)</label><input id="paymentProof" name="paymentProof" type="file" accept="image/*"></div>
+</div>
+<div class="notice"><strong>Before you submit</strong><ol><li>Check your email, full name, wing, flat and mobile number.</li><li>Select the category for your age on 30 November 2026.</li><li>Enter the jersey name and number exactly as you want them printed.</li><li>Choose the correct jersey size.</li><li>Men's and Boys 15–30: upload a player photograph.</li><li>Pay ₹700 and enter the UPI transaction ID.</li></ol></div>
+<button type="submit">Review registration</button>
+<p class="fine">A copy of responses would normally be emailed to the address provided. This standalone prototype is not yet connected to email, Google Sheets, or a registration database.</p>
+</section>
+
+<section class="step"><div class="step-h"><h2>Queries</h2></div>
+<p class="contact">Mr. Sujay Khire – <a href="tel:+919766363201">+91 97663 63201</a><br>Mr. Mandar Navangul – <a href="tel:+918329586345">+91 83295 86345</a></p>
+<p class="fine">MCC may change the schedule and tournament categories after reviewing registrations, which close on 15 November 2026.</p></section>
+</form>
+</div>
+
+<aside class="preview"><h2>Your jersey, back view</h2><p class="tag">Updates as you fill the form</p>
+<div class="jersey-wrap">
+<svg class="jersey" viewBox="0 0 320 350" role="img" aria-label="Back of a cricket jersey with live player name and number">
+<defs><linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f7a52"/><stop offset=".55" stop-color="#145238"/><stop offset="1" stop-color="#0b3022"/></linearGradient></defs>
+<path d="M93 28 L124 15 Q160 38 196 15 L227 28 L296 76 L260 132 L229 112 L229 325 Q160 340 91 325 L91 112 L60 132 L24 76 Z" fill="url(#fabric)" stroke="#061e15" stroke-width="3"/>
+<path d="M124 15 Q160 38 196 15 L194 24 Q160 47 126 24 Z" fill="#c1272d"/><path d="M93 62 Q160 76 227 62" fill="none" stroke="#f6f8f5" stroke-width="2" opacity=".5"/><rect x="150" y="38" width="20" height="9" rx="1.5" fill="#f6f8f5" opacity=".85"/>
+<path d="M91 112 L91 325 M229 112 L229 325" stroke="#f6f8f5" stroke-width="3" opacity=".85"/>
+<path d="M30 85 L63 131 M290 85 L257 131" fill="none" stroke="#c1272d" stroke-width="7" stroke-linecap="round"/>
+<text x="160" y="117" text-anchor="middle" class="jersey-name" id="previewName">YOUR NAME</text>
+<text x="160" y="222" text-anchor="middle" class="jersey-number" id="previewNumber">00</text>
+<path d="M115 258 L205 258" stroke="#d8e86a" stroke-width="3"/>
+<text x="160" y="283" text-anchor="middle" fill="#d8e86a" font-size="14" font-weight="700" letter-spacing="3" font-family="Oswald,Arial Narrow,sans-serif">MPL 2026</text>
+
+</svg></div><p class="preview-note">Choose a name and number to see them on the shirt.</p></aside>
+</main><footer>Metropolitan Cricket Club · MPL-2026</footer>
+<script>
+const category=document.getElementById('category'),photo=document.getElementById('playerPhoto'),jerseyName=document.getElementById('jerseyName'),jerseyNumber=document.getElementById('jerseyNumber'),namePreview=document.getElementById('previewName'),numberPreview=document.getElementById('previewNumber');
+function updatePhotoRequirement(){const required=category.value==="Men's - 31 yrs and above"||category.value==="Boys - 15 yrs to 30 yrs";photo.required=required;document.getElementById('photoHint').textContent=required?'(required for this category)':'(optional for this category)';}
+function updatePreview(){const value=jerseyName.value.trim().toUpperCase();namePreview.textContent=value||'YOUR NAME';numberPreview.textContent=jerseyNumber.value===''?'00':jerseyNumber.value;namePreview.setAttribute('font-size',value.length>12?'12':value.length>9?'14':'17');}
+category.addEventListener('change',updatePhotoRequirement);jerseyName.addEventListener('input',updatePreview);jerseyNumber.addEventListener('change',updatePreview);
+document.getElementById('mplForm').addEventListener('submit',function(e){e.preventDefault();if(!this.reportValidity())return;alert('Your entries have been validated locally. This prototype does not submit or store registrations yet. Connect a secure backend before collecting real registrations.');});
+updatePhotoRequirement();updatePreview();
+</script></body></html>
