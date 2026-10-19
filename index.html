@@ -293,8 +293,10 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
           <div class="mpl-btn-group">
             <button type="button" id="auctionResetBtn" class="mpl-btn mpl-btn-outline">Reset</button>
             <button type="button" id="auctionExportBtn" class="mpl-btn">Export Auction CSV</button>
+            <button type="button" id="auctionDownloadAllBtn" class="mpl-btn" style="background:var(--turf2)" title="Download all filtered player presentation cards as PNG images in a ZIP archive">📥 Download Cards (ZIP)</button>
             <button type="button" id="auctionPrintBtn" class="mpl-btn mpl-btn-alt">Print Player Profiles</button>
           </div>
+          <div id="auctionBatchStatus" class="help" style="width:100%;text-align:right;font-weight:600;display:none;margin-top:6px"></div>
         </div>
         <div id="auctionContentArea"></div>
       </div>
@@ -826,13 +828,17 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
             '<div class="mpl-skill-row"><span class="mpl-skill-label">All-Rounder:</span><span class="mpl-skill-val">' + esc(r.allrounder || 'NA') + '</span></div>' +
             '<div class="mpl-skill-row"><span class="mpl-skill-label">Fielding:</span><span class="mpl-skill-val">' + esc(r.fielding || 'Not specified') + '</span></div>' +
           '</div>' +
+          '<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">' +
+            '<button type="button" class="mpl-btn mpl-btn-sm btn-download-card" data-reg="' + esc(r.registrationId) + '" style="background:var(--turf);color:#fff;border-radius:3px;cursor:pointer;padding:7px 14px;font-size:.82rem" title="Download High-Resolution Player Card PNG for presentations">📥 Download Card Image</button>' +
+            '<span class="card-dl-msg" id="card-msg-' + esc(r.registrationId) + '" style="font-size:.76rem;color:var(--muted)"></span>' +
+          '</div>' +
         '</div>';
       });
       out += '</div>';
       area.innerHTML = out;
     } else {
       let out = '<div class="mpl-table-wrap"><table class="mpl-table"><thead><tr>' +
-        ['Ref ID', 'Player Name', 'Age', 'Gender', 'Category', 'Jersey', 'Role Summary', 'Batter', 'Bowler', 'All-Rounder', 'Fielding']
+        ['Ref ID', 'Player Name', 'Age', 'Gender', 'Category', 'Jersey', 'Role Summary', 'Batter', 'Bowler', 'All-Rounder', 'Fielding', 'Action']
         .map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
 
       filtered.forEach(r => {
@@ -848,12 +854,41 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
           '<td>' + esc(r.bowler) + '</td>' +
           '<td>' + esc(r.allrounder) + '</td>' +
           '<td>' + esc(r.fielding) + '</td>' +
+          '<td><button type="button" class="mpl-btn mpl-btn-outline mpl-btn-sm btn-download-card" data-reg="' + esc(r.registrationId) + '" style="padding:4px 8px;font-size:.78rem;white-space:nowrap" title="Download Presentation Card Image">📥 Card</button></td>' +
         '</tr>';
       });
 
       out += '</tbody></table></div>';
       area.innerHTML = out;
     }
+
+    // Attach card download listeners
+    area.querySelectorAll('.btn-download-card').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const regId = btn.dataset.reg;
+        const player = allRows.find(p => p.registrationId === regId);
+        if (!player) return;
+        const origText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Rendering…';
+        const msgEl = document.getElementById('card-msg-' + regId);
+        if (msgEl) msgEl.textContent = 'Generating PNG…';
+        try {
+          await downloadSinglePlayerCard(player);
+          if (msgEl) {
+            msgEl.textContent = '✓ Downloaded';
+            setTimeout(() => { if (msgEl.textContent === '✓ Downloaded') msgEl.textContent = ''; }, 3000);
+          }
+        } catch (err) {
+          alert('Could not download card image: ' + (err.message || err));
+          if (msgEl) msgEl.textContent = 'Failed';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = origText;
+        }
+      });
+    });
   }
 
   // Filter Event Listeners
@@ -1017,6 +1052,439 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
     ]);
 
     downloadCsv('MPL_2026_Auction_Player_Directory.csv', headers, rows);
+  });
+
+  // MODULE 3.1: Player Presentation Card Image Generator & Batch Downloader
+  const photoBase64Cache = new Map();
+
+  async function getPlayerPhotoDataUri(r) {
+    if (!r.photoUrl) return FALLBACK_AVATAR;
+    if (photoBase64Cache.has(r.photoUrl)) return photoBase64Cache.get(r.photoUrl);
+
+    if (sessionPin) {
+      try {
+        const res = await send('getPhotoBase64', { pin: sessionPin, fileId: r.photoUrl });
+        if (res && res.success && res.dataUri) {
+          photoBase64Cache.set(r.photoUrl, res.dataUri);
+          return res.dataUri;
+        }
+      } catch (e) {}
+    }
+
+    const thumbUrl = getDriveThumbnailUrl(r.photoUrl);
+    if (thumbUrl) {
+      const ok = await new Promise(res => {
+        const testImg = new Image();
+        testImg.crossOrigin = 'anonymous';
+        testImg.onload = () => res(true);
+        testImg.onerror = () => res(false);
+        testImg.src = thumbUrl;
+      });
+      if (ok) {
+        photoBase64Cache.set(r.photoUrl, thumbUrl);
+        return thumbUrl;
+      }
+    }
+
+    return FALLBACK_AVATAR;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    if (ctx.roundRect) {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, r);
+      return;
+    }
+    if (Array.isArray(r)) r = r[0] || 0;
+    if (w < 2 * r) r = w / 2;
+    if (h < 2 * r) r = h / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  async function renderCardCanvas(r) {
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch(e) {}
+    }
+
+    const photoUri = await getPlayerPhotoDataUri(r);
+    const photoImg = await new Promise(resolve => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+      img.onerror = () => {
+        const fallback = new Image();
+        fallback.onload = () => resolve(fallback);
+        fallback.src = FALLBACK_AVATAR;
+      };
+      img.src = photoUri;
+    });
+
+    const W = 600, H = 600;
+    const canvas = document.createElement('canvas');
+    const dpr = 2; // 2x for Retina presentation slides (1200x1200px)
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    // 1. Card Background & Subtle Border
+    ctx.fillStyle = '#ffffff';
+    roundRect(ctx, 0, 0, W, H, 6);
+    ctx.fill();
+
+    ctx.strokeStyle = '#cfd9d1';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, 0, 0, W, H, 6);
+    ctx.stroke();
+
+    // 2. Top Header Stripe
+    ctx.save();
+    ctx.beginPath();
+    roundRect(ctx, 0, 0, W, 8, [6, 6, 0, 0]);
+    ctx.fillStyle = '#0d3b2b';
+    ctx.fill();
+    ctx.restore();
+
+    // 3. Header Branding Line
+    ctx.fillStyle = '#5d6b63';
+    ctx.font = '700 11px "Oswald", "Arial Narrow", sans-serif';
+    ctx.fillText('METROPOLITAN CRICKET CLUB  ·  MPL-2026 OFFICIAL PLAYER CARD', 28, 28);
+
+    // 4. Circular Avatar with Lime Ring
+    const cx = 82, cy = 96, rad = 46;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    if (photoImg) {
+      const scale = Math.max((rad * 2) / photoImg.width, (rad * 2) / photoImg.height);
+      const sw = photoImg.width * scale;
+      const sh = photoImg.height * scale;
+      ctx.drawImage(photoImg, cx - sw / 2, cy - sh / 2, sw, sh);
+    } else {
+      ctx.fillStyle = '#e4ede6';
+      ctx.fillRect(cx - rad, cy - rad, rad * 2, rad * 2);
+    }
+    ctx.restore();
+
+    // Lime Ring around Avatar
+    ctx.beginPath();
+    ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+    ctx.strokeStyle = '#d8e86a';
+    ctx.lineWidth = 3.5;
+    ctx.stroke();
+
+    // 5. Player Name & Reg ID
+    const nameX = 148;
+    const playerName = (r.name || 'PLAYER NAME').toUpperCase();
+    ctx.fillStyle = '#15221c';
+    let nameSize = 25;
+    ctx.font = '700 ' + nameSize + 'px "Oswald", Impact, sans-serif';
+    while (ctx.measureText(playerName).width > 420 && nameSize > 16) {
+      nameSize -= 1;
+      ctx.font = '700 ' + nameSize + 'px "Oswald", Impact, sans-serif';
+    }
+    ctx.fillText(playerName, nameX, 74);
+
+    ctx.fillStyle = '#5d6b63';
+    ctx.font = '600 13px monospace, sans-serif';
+    ctx.fillText(r.registrationId || '', nameX, 94);
+
+    // 6. Pill Badge: Age • Gender
+    const ageGenderText = (r.age ? r.age + ' yrs' : 'Age —') + ' • ' + (r.gender || 'Player');
+    ctx.font = '700 12px "Source Sans 3", Arial, sans-serif';
+    const badgeW = ctx.measureText(ageGenderText).width + 18;
+    ctx.fillStyle = '#0d3b2b';
+    roundRect(ctx, nameX, 106, badgeW, 22, 11);
+    ctx.fill();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(ageGenderText, nameX + 9, 121);
+
+    // Wing & Flat
+    if (r.wing || r.flat) {
+      ctx.fillStyle = '#5d6b63';
+      ctx.font = '600 12px "Source Sans 3", Arial, sans-serif';
+      const wingText = 'The Metropolitan · ' + (r.wing ? 'Wing ' + r.wing : '') + (r.flat ? ' - Flat ' + r.flat : '');
+      ctx.fillText(wingText, nameX, 144);
+    }
+
+    // 7. Role Highlight Box
+    const role = deriveRoleSummary(r);
+    ctx.fillStyle = '#eaf3ed';
+    roundRect(ctx, 28, 160, 544, 42, 4);
+    ctx.fill();
+
+    ctx.fillStyle = '#0d3b2b';
+    roundRect(ctx, 28, 160, 5, 42, [4, 0, 0, 4]);
+    ctx.fill();
+
+    ctx.fillStyle = '#0d3b2b';
+    ctx.font = '700 16px "Source Sans 3", Arial, sans-serif';
+    ctx.fillText(role, 44, 186);
+
+    // 8. Category & Jersey Line
+    ctx.fillStyle = '#5d6b63';
+    ctx.font = '600 13px "Source Sans 3", Arial, sans-serif';
+    let catLine = r.category || '';
+    if (r.jerseyNumber) catLine += ' · Jersey: ' + (r.jerseyName || '—') + ' (#' + r.jerseyNumber + ')';
+    if (r.size) catLine += ' · Size: ' + r.size;
+    ctx.fillText(catLine, 28, 222);
+
+    // 9. Skills Matrix Box
+    ctx.fillStyle = '#ffffff';
+    roundRect(ctx, 28, 238, 544, 252, 4);
+    ctx.fill();
+    ctx.strokeStyle = '#cfd9d1';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, 28, 238, 544, 252, 4);
+    ctx.stroke();
+
+    const skills = [
+      { label: 'Batter:', val: r.batter || 'Not specified' },
+      { label: 'Bowler:', val: r.bowler || 'Not specified' },
+      { label: 'All-Rounder:', val: r.allrounder || 'NA' },
+      { label: 'Fielding:', val: r.fielding || 'Not specified' }
+    ];
+
+    const rowH = 63;
+    skills.forEach((s, idx) => {
+      const rowY = 238 + (idx * rowH);
+
+      // Label (Left)
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#5d6b63';
+      ctx.font = '600 15px "Source Sans 3", Arial, sans-serif';
+      ctx.fillText(s.label, 44, rowY + 38);
+
+      // Value (Right)
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#15221c';
+      ctx.font = '700 16px "Source Sans 3", Arial, sans-serif';
+      ctx.fillText(s.val, 556, rowY + 38);
+
+      // Dashed divider line
+      if (idx < 3) {
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = '#cfd9d1';
+        ctx.beginPath();
+        ctx.moveTo(44, rowY + rowH);
+        ctx.lineTo(556, rowY + rowH);
+        ctx.stroke();
+        ctx.restore();
+      }
+    });
+
+    // 10. Footer Section
+    ctx.textAlign = 'left';
+    ctx.strokeStyle = '#cfd9d1';
+    ctx.beginPath();
+    ctx.moveTo(28, 514);
+    ctx.lineTo(572, 514);
+    ctx.stroke();
+
+    ctx.fillStyle = '#0d3b2b';
+    ctx.font = '700 13px "Oswald", "Arial Narrow", sans-serif';
+    ctx.fillText('METROPOLITAN CRICKET CLUB (MCC)', 28, 536);
+
+    ctx.fillStyle = '#5d6b63';
+    ctx.font = '12px "Source Sans 3", Arial, sans-serif';
+    ctx.fillText('The Metropolitan Premier League · MPL-2026', 28, 552);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#0d3b2b';
+    ctx.font = '700 12px "Oswald", sans-serif';
+    ctx.fillText('PLAYER AUCTION PROFILE', 572, 536);
+
+    ctx.fillStyle = '#5d6b63';
+    ctx.font = '11px monospace, sans-serif';
+    ctx.fillText(r.registrationId || '', 572, 552);
+
+    return canvas;
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  async function downloadSinglePlayerCard(player) {
+    const canvas = await renderCardCanvas(player);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    const safeName = (player.name || 'Player').trim().replace(/[^a-zA-Z0-9_-]/g, '_');
+    const regPart = (player.registrationId || '').split('-').slice(-1)[0] || 'card';
+    downloadBlob(blob, 'MPL2026_PlayerCard_' + safeName + '_' + regPart + '.png');
+  }
+
+  function createZipArchive(files) {
+    const crcTable = new Uint32Array(256);
+    for (let i = 0; i < 256; i++) {
+      let c = i;
+      for (let k = 0; k < 8; k++) {
+        c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      }
+      crcTable[i] = c;
+    }
+    function crc32(buf) {
+      let crc = 0xFFFFFFFF;
+      for (let i = 0; i < buf.length; i++) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ buf[i]) & 0xFF];
+      }
+      return (crc ^ 0xFFFFFFFF) >>> 0;
+    }
+
+    const localHeaders = [];
+    const centralHeaders = [];
+    let offset = 0;
+
+    files.forEach(f => {
+      const nameBuf = new TextEncoder().encode(f.name);
+      const dataBuf = f.data instanceof Uint8Array ? f.data : new Uint8Array(f.data);
+      const crc = crc32(dataBuf);
+      const size = dataBuf.length;
+
+      const local = new Uint8Array(30 + nameBuf.length + size);
+      const v = new DataView(local.buffer);
+      v.setUint32(0, 0x04034b50, true);
+      v.setUint16(4, 20, true);
+      v.setUint16(6, 0, true);
+      v.setUint16(8, 0, true);
+      v.setUint16(10, 0, true);
+      v.setUint16(12, 0, true);
+      v.setUint32(14, crc, true);
+      v.setUint32(18, size, true);
+      v.setUint32(22, size, true);
+      v.setUint16(26, nameBuf.length, true);
+      v.setUint16(28, 0, true);
+      local.set(nameBuf, 30);
+      local.set(dataBuf, 30 + nameBuf.length);
+      localHeaders.push(local);
+
+      const central = new Uint8Array(46 + nameBuf.length);
+      const cv = new DataView(central.buffer);
+      cv.setUint32(0, 0x02014b50, true);
+      cv.setUint16(4, 20, true);
+      cv.setUint16(6, 20, true);
+      cv.setUint16(8, 0, true);
+      cv.setUint16(10, 0, true);
+      cv.setUint16(12, 0, true);
+      cv.setUint16(14, 0, true);
+      cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true);
+      cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBuf.length, true);
+      cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      central.set(nameBuf, 46);
+      centralHeaders.push(central);
+
+      offset += local.length;
+    });
+
+    const centralOffset = offset;
+    let centralSize = 0;
+    centralHeaders.forEach(c => centralSize += c.length);
+
+    const eocd = new Uint8Array(22);
+    const ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true);
+    ev.setUint16(8, files.length, true);
+    ev.setUint16(10, files.length, true);
+    ev.setUint32(12, centralSize, true);
+    ev.setUint32(16, centralOffset, true);
+    ev.setUint16(20, 0, true);
+
+    const totalLen = offset + centralSize + 22;
+    const out = new Uint8Array(totalLen);
+    let cur = 0;
+    localHeaders.forEach(l => { out.set(l, cur); cur += l.length; });
+    centralHeaders.forEach(c => { out.set(c, cur); cur += c.length; });
+    out.set(eocd, cur);
+
+    return new Blob([out], { type: 'application/zip' });
+  }
+
+  document.getElementById('auctionDownloadAllBtn').addEventListener('click', async () => {
+    const searchVal = (document.getElementById('auctionSearch').value || '').trim().toLowerCase();
+    const catVal = document.getElementById('auctionCategory').value;
+    const skillVal = document.getElementById('auctionSkill').value;
+
+    const filtered = allRows.filter(r => {
+      if (catVal && r.category !== catVal) return false;
+      if (skillVal === 'allrounder' && (!r.allrounder || r.allrounder === 'NA')) return false;
+      if (skillVal === 'batter' && (r.batter !== 'Opener' && r.batter !== 'Middle Order')) return false;
+      if (skillVal === 'bowler' && (r.bowler !== 'Excellent' && r.bowler !== 'Average')) return false;
+      if (searchVal) {
+        const text = [r.name, r.registrationId, r.jerseyName].join(' ').toLowerCase();
+        if (!text.includes(searchVal)) return false;
+      }
+      return true;
+    });
+
+    if (!filtered.length) {
+      alert('No players match the current filter criteria.');
+      return;
+    }
+
+    const total = filtered.length;
+    const dlBtn = document.getElementById('auctionDownloadAllBtn');
+    const statusEl = document.getElementById('auctionBatchStatus');
+    dlBtn.disabled = true;
+    statusEl.style.display = 'block';
+    statusEl.style.color = 'var(--turf)';
+    statusEl.textContent = 'Preparing cards (0 of ' + total + ')…';
+
+    try {
+      const files = [];
+      for (let i = 0; i < total; i++) {
+        const p = filtered[i];
+        statusEl.textContent = 'Rendering card ' + (i + 1) + ' of ' + total + ': ' + (p.name || 'Player') + '…';
+        const canvas = await renderCardCanvas(p);
+        const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+        const arrayBuf = await blob.arrayBuffer();
+        const safeName = (p.name || 'Player').trim().replace(/[^a-zA-Z0-9_-]/g, '_');
+        const regPart = (p.registrationId || '').split('-').slice(-1)[0] || String(i + 1);
+        files.push({
+          name: 'MPL2026_Card_' + String(i + 1).padStart(3, '0') + '_' + safeName + '_' + regPart + '.png',
+          data: new Uint8Array(arrayBuf)
+        });
+      }
+
+      statusEl.textContent = 'Packaging ' + total + ' cards into ZIP archive…';
+      const zipBlob = createZipArchive(files);
+      const catSuffix = catVal ? '_' + catVal.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20) : '';
+      downloadBlob(zipBlob, 'MPL_2026_Player_Cards' + catSuffix + '.zip');
+
+      statusEl.style.color = '#166534';
+      statusEl.textContent = '✓ Successfully downloaded ' + total + ' player presentation cards in ZIP archive!';
+      setTimeout(() => { if (statusEl.textContent.includes('Successfully')) statusEl.style.display = 'none'; }, 6000);
+    } catch (err) {
+      statusEl.style.color = '#991b1b';
+      statusEl.textContent = 'Failed: ' + (err.message || err);
+      alert('Could not complete batch card download: ' + (err.message || err));
+    } finally {
+      dlBtn.disabled = false;
+    }
   });
 
   // MODULE 4: Registration Deadline & Form Controls
