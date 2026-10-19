@@ -15,6 +15,77 @@ header{background:var(--turf);color:#fff;position:relative;overflow:hidden}heade
 main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:28px;align-items:start}.panel{background:var(--chalk);border-top:6px solid var(--turf);box-shadow:0 2px 0 var(--line),0 24px 40px -28px #0d3b2b66;padding:24px 28px;min-width:0}.panel h2,.side h2{font-family:var(--disp);font-weight:500;text-transform:uppercase;letter-spacing:.03em;font-size:1.5rem;margin:0 0 12px}.panel p{margin:0 0 14px}.cta{display:inline-block;background:var(--ball);color:white;text-decoration:none;padding:14px 24px;font-family:var(--disp);font-size:1.2rem;letter-spacing:.05em;text-transform:uppercase;font-weight:500;border-radius:3px;margin:8px 0 14px}.cta:hover{background:#a11f25}.note{background:#fff;border-left:5px solid var(--lime);padding:12px 14px;margin:12px 0 18px}.side{background:var(--turf);color:#fff;padding:22px;min-width:0}.side h2{color:#fff;font-size:1.25rem}.side .tag{color:var(--lime);font-size:.9rem;margin-top:-8px}.pay{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:16px;align-items:center;background:#fff;color:var(--ink);padding:14px}.pay img{width:100%;height:auto;display:block}.upi{font-weight:700;overflow-wrap:anywhere}.help{font-size:.9rem;color:var(--muted)}.side .help{color:#d3e2d9}.contact a{color:var(--lime)}.steps{padding-left:22px}.steps li{margin:7px 0}footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 18px 28px}
 @media(max-width:860px){main{grid-template-columns:1fr}.fixtures{grid-template-columns:1fr 1fr}}@media(max-width:560px){.panel{padding:20px 16px}.pay{grid-template-columns:1fr;text-align:center}.pay img{max-width:210px;margin:0 auto}.hero{padding-top:34px}}
 .organiser-review-inline{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;white-space:nowrap;background:var(--turf);color:#fff;text-decoration:none;padding:14px 20px;margin:8px 0 14px 8px;border-radius:3px;font-family:var(--disp);font-size:1.2rem;letter-spacing:.04em;text-transform:uppercase;font-weight:500;border:2px solid var(--turf);line-height:1.5}.organiser-review-inline:hover{background:var(--turf2);border-color:var(--turf2)}@media(max-width:560px){.organiser-review-inline{margin-left:8px;padding:12px 16px;font-size:1.05rem}}
+
+/* Organiser Reporting Suite Styles */
+.mpl-tab-nav{display:flex;gap:6px;border-bottom:2px solid var(--line);margin:16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.mpl-tab-btn{background:#fff;border:1px solid var(--line);border-bottom:3px solid transparent;padding:10px 18px;font-family:var(--disp);font-size:1.1rem;text-transform:uppercase;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s;border-radius:3px 3px 0 0}
+.mpl-tab-btn:hover{color:var(--turf);background:#f0f4f1}
+.mpl-tab-btn.active{color:var(--ball);border-bottom-color:var(--ball);background:#fff;border-color:var(--line) var(--line) #fff}
+.mpl-kpi-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin-bottom:16px}
+.mpl-kpi-card{background:#fff;border-left:4px solid var(--turf);padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mpl-kpi-card.kpi-accent{border-left-color:var(--ball)}
+.mpl-kpi-card.kpi-lime{border-left-color:var(--lime)}
+.mpl-kpi-num{font-family:var(--disp);font-size:1.6rem;font-weight:700;line-height:1;color:var(--turf)}
+.mpl-kpi-lbl{font-size:.76rem;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.mpl-filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;background:#f0f4f1;padding:12px 14px;margin-bottom:14px;border:1px solid var(--line)}
+.mpl-fg{display:flex;flex-direction:column;gap:3px;flex:1;min-width:140px}
+.mpl-fg label{font-size:.75rem;font-weight:700;text-transform:uppercase;color:var(--muted)}
+.mpl-input,.mpl-select{padding:7px 9px;border:1px solid var(--line);font-family:var(--body);font-size:.9rem;background:#fff;border-radius:2px;width:100%}
+.mpl-btn-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.mpl-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--turf);color:#fff;border:none;padding:8px 14px;font-family:var(--disp);font-size:.95rem;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;border-radius:2px;font-weight:500;text-decoration:none}
+.mpl-btn:hover{background:var(--turf2)}
+.mpl-btn-alt{background:var(--ball)}
+.mpl-btn-alt:hover{background:#a11f25}
+.mpl-btn-outline{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.mpl-btn-outline:hover{background:#e4ede6}
+.mpl-btn-sm{padding:5px 9px;font-size:.85rem}
+.mpl-badge{display:inline-block;padding:2px 6px;font-size:.75rem;font-weight:700;border-radius:3px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;white-space:nowrap}
+.badge-exempt{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
+.badge-verified{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.badge-pending{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.badge-missing{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.badge-confirmed{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe}
+.badge-rejected{background:#f3f4f6;color:#4b5563;border:1px solid #e5e7eb}
+.mpl-table-wrap{overflow-x:auto;max-height:550px;border:1px solid var(--line);background:#fff}
+.mpl-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+.mpl-table th{background:#e4ede6;color:var(--ink);font-weight:700;text-align:left;padding:9px 8px;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:2}
+.mpl-table td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.mpl-table tr:hover td{background:#f9fbf9}
+.mpl-vendor-summary{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);padding:10px 14px;margin-bottom:14px}
+.mpl-size-pill{background:#e4ede6;padding:4px 8px;border-radius:3px;font-size:.82rem;font-weight:600}
+.mpl-size-pill strong{color:var(--turf);margin-left:4px}
+.mpl-auction-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-top:14px}
+.mpl-player-card{background:#fff;border:1px solid var(--line);border-top:4px solid var(--turf);box-shadow:0 1px 3px rgba(0,0,0,.06);padding:14px;display:flex;flex-direction:column;gap:10px}
+.mpl-card-top{display:flex;gap:12px;align-items:center}
+.mpl-card-photo-wrap{position:relative;width:76px;height:76px;border-radius:50%;overflow:hidden;border:2px solid var(--lime);background:#e4ede6;flex-shrink:0}
+.mpl-card-photo{width:100%;height:100%;object-fit:cover;display:block}
+.mpl-card-info{flex:1;min-width:0}
+.mpl-card-name{font-family:var(--disp);font-size:1.2rem;font-weight:700;margin:0 0 2px;line-height:1.1;color:var(--ink);text-transform:uppercase}
+.mpl-card-reg{font-size:.73rem;color:var(--muted);font-family:monospace;margin-bottom:4px}
+.mpl-card-badge{display:inline-block;background:var(--turf);color:#fff;font-size:.72rem;padding:2px 6px;border-radius:2px;font-weight:600}
+.mpl-skills-box{background:#f8faf8;border:1px solid #e1e8e2;padding:8px 10px;font-size:.8rem}
+.mpl-skill-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e1e8e2}
+.mpl-skill-row:last-child{border-bottom:none}
+.mpl-skill-label{color:var(--muted);font-weight:600}
+.mpl-skill-val{color:var(--ink);font-weight:700;text-align:right}
+.mpl-uncollected-box{font-size:.75rem;color:#708077;border-top:1px solid #eef2ef;padding-top:6px;line-height:1.4}
+.mpl-drive-link{display:inline-block;margin-top:4px;font-size:.75rem;color:var(--turf);text-decoration:none;font-weight:600}
+.mpl-drive-link:hover{text-decoration:underline}
+.mpl-role-summary{background:#eaf2ec;color:var(--turf2);padding:4px 8px;font-weight:700;font-size:.8rem;border-radius:2px;margin-bottom:6px}
+.mpl-role-disclaimer{font-size:.7rem;color:var(--muted);font-style:italic;margin-top:2px}
+.mpl-empty-msg{padding:24px;text-align:center;color:var(--muted);font-size:.95rem;background:#fff;border:1px dashed var(--line);margin:14px 0}
+@media print{
+  header, main, aside, footer, #adminBridgeIframe{display:none !important}
+  body{background:#fff !important;margin:0 !important;padding:0 !important}
+  #organiserReviewPanel{display:block !important;position:static !important;width:100% !important;max-width:100% !important;margin:0 !important;padding:0 !important;box-shadow:none !important;border:none !important}
+  #organiserReviewPanel *{visibility:visible !important}
+  .mpl-filter-bar, .mpl-tab-nav, #organiserPinForm, #openOrganiserReview, #closeOrganiserReview, .cta, .mpl-btn, #organiserReviewMessage, .help{display:none !important}
+  .mpl-table-wrap{max-height:none !important;overflow:visible !important;border:none !important}
+  .mpl-table th{background:#eee !important;color:#000 !important}
+  .mpl-table td, .mpl-table th{border:1px solid #ccc !important}
+  .mpl-auction-grid{grid-template-columns:repeat(2,1fr) !important;gap:12px !important}
+  .mpl-player-card{break-inside:avoid !important;box-shadow:none !important;border:1px solid #999 !important}
+}
 </style>
 </head>
 <body>
@@ -24,21 +95,22 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
 <div class="fx"><b>28 Nov</b><small>Boys, 8 to below 15</small></div>
 <div class="fx"><b>29 Nov</b><small>Girls 8 to below 15; Women's 15+</small></div>
 <div class="fx"><b>5 &amp; 6 Dec</b><small>Boys 15–30; Men's 31+</small></div>
-<div class="fx final"><b>6 Dec</b><small>Finals, all categories</small></div>
+<div class="fx final"><b>6 Dec</b><small>Men's 31+; Finals, all categories</small></div>
 </div>
-<div class="closing">Registrations close on 15 November 2026</div>
+<div class="closing" id="publicClosingBanner">Registrations closes on 10 November 2026</div>
 </header>
 <main>
 <section class="panel">
 <h2>Welcome, Metropolitan cricket enthusiasts!</h2>
 <p>Metropolitan Cricket Club invites residents to register for MPL-2026. Please use the official registration form to provide player details, date of birth, cricketing skills and jersey preferences.</p>
+<div id="registrationStatusNotice" class="note" style="display:none;border-left-color:var(--ball);background:#fee2e2;color:#991b1b;font-weight:600"></div>
 <div class="note"><strong>Register through the official form.</strong><br>The form calculates age as of 15 November 2026 and selects the eligible category based on the details entered. Please check all information before submitting.</div>
-<a class="cta" href="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec" target="_blank" rel="noopener">Register Now ↗</a>
+<a class="cta" id="ctaRegisterBtn" href="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec" target="_blank" rel="noopener">Register Now ↗</a>
 <button class="organiser-review-inline" type="button" id="openOrganiserReview" aria-label="Organiser Review">Organiser Review ↗</button>
 <p class="help">The registration form opens in Google Apps Script. Complete and submit your registration there; this GitHub page is for tournament information.</p>
 <h2 style="margin-top:26px">Before you register</h2>
 <ol class="steps">
-<li>Keep your email address, mobile number, wing and flat details ready.</li>
+<li>Keep your email address, WhatsApp number, CricHeroes mobile number, wing and flat details ready.</li>
 <li>Enter the player's correct date of birth so the age and category can be determined.</li>
 <li>Choose cricketing skills and jersey preferences carefully.</li>
 <li>Upload a player photograph if the official form requires one for your category.</li>
@@ -62,53 +134,1066 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
 
 <section id="organiserReviewPanel" hidden style="max-width:1140px;margin:0 auto 36px;padding:0 20px">
   <div class="panel" style="border-top-color:var(--ball)">
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><h2 style="margin:0">Organiser review</h2><button type="button" id="closeOrganiserReview" style="padding:10px 14px;cursor:pointer">Close</button></div>
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+      <h2 style="margin:0">Organiser review &amp; reporting</h2>
+      <button type="button" id="closeOrganiserReview" style="padding:10px 14px;cursor:pointer">Close</button>
+    </div>
     <p class="help">Authorised MCC organisers only. Enter the review PIN to load registrations.</p>
     <form id="organiserPinForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-      <div style="flex:1;min-width:220px"><label for="organiserPin">Organiser PIN</label><input id="organiserPin" type="password" autocomplete="current-password" required style="width:100%;padding:12px;border:1px solid var(--line);font:inherit" /></div>
+      <div style="flex:1;min-width:220px">
+        <label for="organiserPin">Organiser PIN</label>
+        <input id="organiserPin" type="password" autocomplete="current-password" required style="width:100%;padding:12px;border:1px solid var(--line);font:inherit" />
+      </div>
       <button class="cta" type="submit" id="organiserLoadBtn" style="border:0;cursor:pointer;margin:0">Verify &amp; Load</button>
     </form>
     <p id="organiserReviewMessage" role="status" aria-live="polite" class="help"></p>
-    <div id="organiserRegistrationResults" style="display:none;overflow:auto;max-width:100%"></div>
+    
+    <div id="organiserRegistrationResults" style="display:none;margin-top:16px">
+      <!-- Navigation Tabs -->
+      <div class="mpl-tab-nav" role="tablist">
+        <button type="button" class="mpl-tab-btn active" data-tab="review" role="tab" aria-selected="true">1. Registration Review</button>
+        <button type="button" class="mpl-tab-btn" data-tab="vendor" role="tab" aria-selected="false">2. T-Shirt Vendor List</button>
+        <button type="button" class="mpl-tab-btn" data-tab="auction" role="tab" aria-selected="false">3. Auction Player Directory</button>
+        <button type="button" class="mpl-tab-btn" data-tab="deadline" role="tab" aria-selected="false">⚙ 4. Deadline &amp; Form Controls</button>
+      </div>
+
+      <!-- Module 1: Category-wise Player Registration Review -->
+      <div id="tabReview" class="mpl-tab-pane" style="display:block">
+        <div id="reviewKpiBar" class="mpl-kpi-bar"></div>
+        <div class="mpl-filter-bar">
+          <div class="mpl-fg" style="min-width:170px">
+            <label for="reviewSearch">Search</label>
+            <input type="text" id="reviewSearch" class="mpl-input" placeholder="Player, mobile (WA/CH), reg ID...">
+          </div>
+          <div class="mpl-fg">
+            <label for="reviewCategory">Category</label>
+            <select id="reviewCategory" class="mpl-select">
+              <option value="">All Categories</option>
+              <option value="Boys - 8 yrs to below 15 yrs">Boys (8–14 yrs)</option>
+              <option value="Girls - 8 yrs to below 15 yrs">Girls (8–14 yrs)</option>
+              <option value="Women's - 15 yrs and above">Women's (15+ yrs)</option>
+              <option value="Boys - 15 yrs to 30 yrs">Boys (15–30 yrs)</option>
+              <option value="Men's - 31 yrs and above">Men's (31+ yrs)</option>
+            </select>
+          </div>
+          <div class="mpl-fg">
+            <label for="reviewPayment">Payment Status</label>
+            <select id="reviewPayment" class="mpl-select">
+              <option value="">All Payment States</option>
+              <option value="verified">Payment Verified</option>
+              <option value="exempt">Exempt (MCC Member)</option>
+              <option value="ref_pending">Ref Provided — Pending Verification</option>
+              <option value="missing">Reference Missing</option>
+            </select>
+          </div>
+          <div class="mpl-fg">
+            <label for="reviewStatus">Review Status</label>
+            <select id="reviewStatus" class="mpl-select">
+              <option value="">All Review Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Payment Verified">Payment Verified</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="mpl-btn-group">
+            <button type="button" id="reviewResetBtn" class="mpl-btn mpl-btn-outline">Reset</button>
+            <button type="button" id="reviewExportBtn" class="mpl-btn">Export Review CSV</button>
+          </div>
+        </div>
+        <div id="reviewTableWrap" class="mpl-table-wrap"></div>
+      </div>
+
+      <!-- Module 2: T-Shirt Vendor List -->
+      <div id="tabVendor" class="mpl-tab-pane" style="display:none">
+        <p class="help" style="margin-top:0">Official production list for jersey vendor. Stored preferred jersey numbers are preserved exactly (duplicates and leading zeros permitted). Personal contact and payment details are strictly excluded.</p>
+        <div class="mpl-filter-bar">
+          <div class="mpl-fg" style="max-width:130px">
+            <label for="vendorGender">Gender</label>
+            <select id="vendorGender" class="mpl-select">
+              <option value="">All Genders</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="mpl-fg" style="max-width:140px">
+            <label for="vendorSize">Jersey Size</label>
+            <select id="vendorSize" class="mpl-select">
+              <option value="">All Sizes</option>
+              <option>22</option><option>24</option><option>26</option><option>28</option><option>30</option>
+              <option>32</option><option>34</option><option>36</option><option>M - 38</option><option>L - 40</option>
+              <option>XL - 42</option><option>2XL - 44</option><option>3XL - 46</option><option>4XL - 48</option>
+            </select>
+          </div>
+          <div class="mpl-fg">
+            <label for="vendorCategory">Category</label>
+            <select id="vendorCategory" class="mpl-select">
+              <option value="">All Categories</option>
+              <option value="Boys - 8 yrs to below 15 yrs">Boys (8–14 yrs)</option>
+              <option value="Girls - 8 yrs to below 15 yrs">Girls (8–14 yrs)</option>
+              <option value="Women's - 15 yrs and above">Women's (15+ yrs)</option>
+              <option value="Boys - 15 yrs to 30 yrs">Boys (15–30 yrs)</option>
+              <option value="Men's - 31 yrs and above">Men's (31+ yrs)</option>
+            </select>
+          </div>
+          <div class="mpl-fg" style="max-width:160px">
+            <label for="vendorSort">Sort By</label>
+            <select id="vendorSort" class="mpl-select">
+              <option value="name">Player Name (A–Z)</option>
+              <option value="size">Jersey Size</option>
+              <option value="category">Category</option>
+              <option value="serial">Serial Number</option>
+            </select>
+          </div>
+          <div class="mpl-btn-group">
+            <button type="button" id="vendorResetBtn" class="mpl-btn mpl-btn-outline">Reset</button>
+            <button type="button" id="vendorExportBtn" class="mpl-btn">Export Vendor CSV</button>
+            <button type="button" id="vendorPrintBtn" class="mpl-btn mpl-btn-alt">Print Vendor List</button>
+          </div>
+        </div>
+        <div id="vendorSizeSummary" class="mpl-vendor-summary"></div>
+        <div id="vendorTableWrap" class="mpl-table-wrap"></div>
+      </div>
+
+      <!-- Module 3: Auction Player Information Directory -->
+      <div id="tabAuction" class="mpl-tab-pane" style="display:none">
+        <p class="help" style="margin-top:0">Player Information Directory for offline auction planning and selection. <em>Note: The MPL-2026 auction is conducted outside this platform; this view provides registered player profiles only and does not track auction status, bidding, or sales.</em></p>
+        <div class="mpl-filter-bar">
+          <div class="mpl-fg" style="min-width:170px">
+            <label for="auctionSearch">Search Player</label>
+            <input type="text" id="auctionSearch" class="mpl-input" placeholder="Player name or reg ID...">
+          </div>
+          <div class="mpl-fg">
+            <label for="auctionCategory">Category</label>
+            <select id="auctionCategory" class="mpl-select">
+              <option value="">All Categories</option>
+              <option value="Boys - 8 yrs to below 15 yrs">Boys (8–14 yrs)</option>
+              <option value="Girls - 8 yrs to below 15 yrs">Girls (8–14 yrs)</option>
+              <option value="Women's - 15 yrs and above">Women's (15+ yrs)</option>
+              <option value="Boys - 15 yrs to 30 yrs">Boys (15–30 yrs)</option>
+              <option value="Men's - 31 yrs and above">Men's (31+ yrs)</option>
+            </select>
+          </div>
+          <div class="mpl-fg">
+            <label for="auctionSkill">Primary Role / Skill</label>
+            <select id="auctionSkill" class="mpl-select">
+              <option value="">All Cricket Roles</option>
+              <option value="allrounder">All-Rounders</option>
+              <option value="batter">Batters (Opener / Middle Order)</option>
+              <option value="bowler">Bowlers (Excellent / Average)</option>
+            </select>
+          </div>
+          <div class="mpl-fg" style="max-width:160px">
+            <label>View Mode</label>
+            <div style="display:flex;gap:4px">
+              <button type="button" id="auctionViewGridBtn" class="mpl-btn mpl-btn-outline mpl-btn-sm" style="flex:1;background:var(--turf);color:#fff">Cards</button>
+              <button type="button" id="auctionViewTableBtn" class="mpl-btn mpl-btn-outline mpl-btn-sm" style="flex:1">Table</button>
+            </div>
+          </div>
+          <div class="mpl-btn-group">
+            <button type="button" id="auctionResetBtn" class="mpl-btn mpl-btn-outline">Reset</button>
+            <button type="button" id="auctionExportBtn" class="mpl-btn">Export Auction CSV</button>
+            <button type="button" id="auctionPrintBtn" class="mpl-btn mpl-btn-alt">Print Player Profiles</button>
+          </div>
+        </div>
+        <div id="auctionContentArea"></div>
+      </div>
+
+      <!-- Module 4: Registration Deadline & Form Controls -->
+      <div id="tabDeadline" class="mpl-tab-pane" style="display:none">
+        <p class="help" style="margin-top:0">Manage the registration cut-off date and public form availability for MPL-2026. Setting changes update the live tournament schedule banner and lock or unlock registration submissions in real time.</p>
+        
+        <div style="background:#fff;border:1px solid var(--line);border-radius:4px;padding:24px;max-width:760px;margin:16px 0">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px">
+            <div>
+              <h3 style="margin:0;font-family:var(--disp);font-size:1.35rem;text-transform:uppercase;color:var(--turf);letter-spacing:.02em">Tournament Registration Controls</h3>
+              <div style="font-size:.85rem;color:var(--muted);margin-top:2px">Cut-off date &amp; live submission gate</div>
+            </div>
+            <div id="deadlineStatusBadge" class="mpl-badge badge-pending" style="font-size:.85rem;padding:6px 12px;border-radius:20px">
+              Loading Status…
+            </div>
+          </div>
+
+          <div id="deadlineAlertNotice" class="note" style="display:none;margin-bottom:18px"></div>
+
+          <!-- Current status info box -->
+          <div style="background:var(--chalk);border-left:4px solid var(--turf);padding:12px 16px;border-radius:2px;margin-bottom:20px">
+            <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Effective Registration Status</div>
+            <div id="deadlineCurrentStatusText" style="font-size:1.08rem;font-weight:700;color:var(--ink);margin-top:4px">Checking server status…</div>
+          </div>
+
+          <form id="deadlineSettingsForm" style="display:flex;flex-direction:column;gap:18px">
+            <div class="mpl-fg">
+              <label for="deadlineDateInput" style="font-size:.82rem;font-weight:700;text-transform:uppercase;color:var(--ink)">
+                Last Date for Accepting Registrations *
+              </label>
+              <input type="date" id="deadlineDateInput" required style="max-width:280px" class="mpl-input">
+              <p class="help" style="margin:4px 0 0;font-size:.82rem">Registrations will remain open until 23:59:59 IST on this chosen date. Once the clock passes midnight into the following day, online submissions will automatically close.</p>
+            </div>
+
+            <div class="mpl-fg">
+              <label for="deadlineIsOpenSelect" style="font-size:.82rem;font-weight:700;text-transform:uppercase;color:var(--ink)">
+                Registration Gate Control *
+              </label>
+              <select id="deadlineIsOpenSelect" style="max-width:340px" class="mpl-select">
+                <option value="true">Open (Accept submissions until deadline date)</option>
+                <option value="false">Closed (Manually halt submissions now)</option>
+              </select>
+              <p class="help" style="margin:4px 0 0;font-size:.82rem">Use this control to immediately close or reopen the registration form at any time, irrespective of the date.</p>
+            </div>
+
+            <div class="mpl-fg">
+              <label for="deadlineCustomMessage" style="font-size:.82rem;font-weight:700;text-transform:uppercase;color:var(--ink)">
+                Custom Closed Notice / Banner Message (Optional)
+              </label>
+              <textarea id="deadlineCustomMessage" rows="3" class="mpl-input" placeholder="e.g. Registrations for MPL-2026 are now closed. For any queries, please reach out to the tournament coordinators." style="resize:vertical"></textarea>
+              <p class="help" style="margin:4px 0 0;font-size:.82rem">This message appears on the official registration form and GitHub tournament page whenever registrations are closed.</p>
+            </div>
+
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
+              <button type="submit" id="saveDeadlineBtn" class="mpl-btn" style="padding:10px 20px">
+                💾 Save Registration Controls
+              </button>
+              <button type="button" id="reloadDeadlineBtn" class="mpl-btn mpl-btn-outline" style="padding:10px 16px">
+                🔄 Reload Current Settings
+              </button>
+              <span id="deadlineSaveMsg" class="help" style="font-weight:600"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- Hidden bridge iframe support -->
+<iframe id="adminBridgeIframe" src="https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec?view=bridge" style="display:none" title="Admin Bridge"></iframe>
 
 <footer>Metropolitan Cricket Club · MPL-2026</footer>
 
 <script>
 (function(){
- const panel=document.getElementById('organiserReviewPanel'), openBtn=document.getElementById('openOrganiserReview'), closeBtn=document.getElementById('closeOrganiserReview');
- const form=document.getElementById('organiserPinForm'), pinInput=document.getElementById('organiserPin'), msg=document.getElementById('organiserReviewMessage'), results=document.getElementById('organiserRegistrationResults');
- const API='https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec';
- let sessionPin='', rowsByNumber={};
- async function send(action,data){
-  const ctrl=new AbortController(), t=setTimeout(()=>ctrl.abort(),30000);
-  try{
-   const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action:action},data)),signal:ctrl.signal});
-   if(!r.ok)throw new Error('Server error '+r.status);
-   return await r.json();
-  }catch(err){
-   if(err&&err.name==='AbortError')throw new Error('The server took too long to respond. Please try again.');
-   if(err instanceof TypeError)throw new Error('Could not reach the server. Check that the web app is deployed with access set to "Anyone".');
-   throw err;
-  }finally{clearTimeout(t);}
- }
- openBtn.addEventListener('click',()=>{panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});pinInput.focus();});
- closeBtn.addEventListener('click',()=>{panel.hidden=true;pinInput.value='';sessionPin='';results.style.display='none';results.innerHTML='';msg.textContent='';});
- form.addEventListener('submit',async e=>{e.preventDefault();const pin=pinInput.value.trim();if(!pin)return;msg.textContent='Verifying PIN and loading registrations…';results.style.display='none';document.getElementById('organiserLoadBtn').disabled=true;
- try{const res=await send('list',{pin});if(!res||!res.success)throw new Error(res&&res.message||'Access denied.');sessionPin=pin;render(res.rows||[]);msg.textContent='Access verified. '+(res.rows||[]).length+' registration(s) loaded.';}
- catch(err){sessionPin='';msg.textContent=err.message||'Unable to verify access. Check deployment and try again.';}
- finally{document.getElementById('organiserLoadBtn').disabled=false;}
- });
- function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
- function render(rows){rowsByNumber={};if(!rows.length){results.innerHTML='<p>No registrations have been submitted yet.</p>';results.style.display='block';return;}
- let out='<table style="border-collapse:collapse;width:100%;min-width:1100px;font-size:13px"><thead><tr>'+['Reference','Submitted','Player','Category','Wing / Flat','Mobile','Email','Jersey','UPI transaction','Photo','Payment proof','Status','Save'].map(x=>'<th style="padding:9px;border-bottom:2px solid #cfd9d1;text-align:left;background:#e4ede6;position:sticky;top:0">'+x+'</th>').join('')+'</tr></thead><tbody>';
- rows.forEach(r=>{rowsByNumber[r.rowNumber]=r;out+='<tr>'+[r.registrationId,r.timestamp,r.name,r.category,r.wing+' / '+r.flat,r.phone,r.email,r.jerseyName+' #'+r.jerseyNumber+' ('+r.size+')',r.transaction].map(v=>'<td style="padding:8px;border-bottom:1px solid #cfd9d1;vertical-align:top">'+esc(v)+'</td>').join('');
- out+='<td style="padding:8px;border-bottom:1px solid #cfd9d1">'+(r.photoUrl?'<a target="_blank" rel="noopener" href="'+esc(r.photoUrl)+'">View</a>':'—')+'</td><td style="padding:8px;border-bottom:1px solid #cfd9d1">'+(r.paymentProofUrl?'<a target="_blank" rel="noopener" href="'+esc(r.paymentProofUrl)+'">View</a>':'—')+'</td>';
- out+='<td style="padding:8px;border-bottom:1px solid #cfd9d1"><select id="mpl-status-'+Number(r.rowNumber)+'"><option'+(r.status==='Pending'?' selected':'')+'>Pending</option><option'+(r.status==='Payment Verified'?' selected':'')+'>Payment Verified</option><option'+(r.status==='Confirmed'?' selected':'')+'>Confirmed</option><option'+(r.status==='Rejected'?' selected':'')+'>Rejected</option></select></td><td style="padding:8px;border-bottom:1px solid #cfd9d1"><button type="button" data-row="'+Number(r.rowNumber)+'" class="mpl-save-status">Save</button></td></tr>';});
- out+='</tbody></table>';results.innerHTML=out;results.style.display='block';
- results.querySelectorAll('.mpl-save-status').forEach(btn=>btn.addEventListener('click',async()=>{const row=Number(btn.dataset.row),status=document.getElementById('mpl-status-'+row).value;btn.disabled=true;msg.textContent='Updating registration status…';try{const res=await send('update',{pin:sessionPin,rowNumber:row,status});if(!res||!res.success)throw new Error(res&&res.message||'Status update failed.');msg.textContent='Status updated for '+(res.registrationId||'registration')+'.';}catch(err){msg.textContent=err.message||'Could not update status.';}finally{btn.disabled=false;}}));
- }
+  const panel = document.getElementById('organiserReviewPanel'),
+        openBtn = document.getElementById('openOrganiserReview'),
+        closeBtn = document.getElementById('closeOrganiserReview');
+  const form = document.getElementById('organiserPinForm'),
+        pinInput = document.getElementById('organiserPin'),
+        msg = document.getElementById('organiserReviewMessage'),
+        results = document.getElementById('organiserRegistrationResults');
+  const bridgeIframe = document.getElementById('adminBridgeIframe');
+  const API = 'https://script.google.com/macros/s/AKfycbyI5BAJLpdW1tCmv3-A9Y7RLpMU5x69nB-nK6HJCqgWGO-VrIHhNDmzJNgKgoYkwEL0/exec';
+
+  let sessionPin = '', allRows = [], activeTab = 'review', auctionViewMode = 'grid';
+
+  const FALLBACK_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e4ede6'/%3E%3Ccircle cx='50' cy='36' r='18' fill='%23145238'/%3E%3Cpath d='M22 86 C22 64 34 58 50 58 C66 58 78 64 78 86 Z' fill='%23145238'/%3E%3C/svg%3E";
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function getDriveThumbnailUrl(url) {
+    if (!url) return '';
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w320';
+    }
+    return url;
+  }
+
+  function getPaymentStatusInfo(r) {
+    const isExempt = (r.isMccMember === 'Yes' || r.paymentExemption === 'MCC member exemption' || String(r.registrationFee) === '0');
+    if (isExempt) {
+      return {
+        key: 'exempt',
+        label: 'Exempt',
+        detail: r.memberName ? 'MCC Member: ' + r.memberName : 'MCC Exemption',
+        badgeClass: 'badge-exempt'
+      };
+    }
+    if (r.status === 'Payment Verified' || r.status === 'Confirmed') {
+      return {
+        key: 'verified',
+        label: 'Payment Verified',
+        detail: r.transaction ? 'UPI: ' + r.transaction : 'Verified by Organiser',
+        badgeClass: 'badge-verified'
+      };
+    }
+    if (r.transaction && r.transaction.trim() !== '') {
+      return {
+        key: 'ref_pending',
+        label: 'Ref Provided — Pending Verification',
+        detail: 'UPI: ' + r.transaction,
+        badgeClass: 'badge-pending'
+      };
+    }
+    return {
+      key: 'missing',
+      label: 'Reference Missing',
+      detail: 'Payment verification required',
+      badgeClass: 'badge-missing'
+    };
+  }
+
+  function deriveRoleSummary(r) {
+    const allrounder = String(r.allrounder || '').trim();
+    const batter = String(r.batter || '').trim();
+    const bowler = String(r.bowler || '').trim();
+
+    if (allrounder && allrounder !== 'NA') {
+      return 'All-Rounder (' + allrounder + ')';
+    }
+    if (bowler === 'Excellent' || bowler === 'Average') {
+      if (batter === 'Opener' || batter === 'Middle Order') {
+        return 'Batting All-Rounder / ' + batter;
+      }
+      return 'Bowler (' + bowler + ')';
+    }
+    if (batter === 'Opener' || batter === 'Middle Order') {
+      return 'Batter (' + batter + ')';
+    }
+    return 'Player (' + (batter || 'Cricket Participant') + ')';
+  }
+
+  function formatCsvCell(val, isJerseyNumber) {
+    let s = String(val == null ? '' : val).trim();
+    if (isJerseyNumber) {
+      if (!s) return '""';
+      // Force spreadsheet applications to treat jersey number as exact string
+      return '"=""' + s.replace(/"/g, '""') + '"""';
+    }
+    if (/^[=+@\-\t\r]/.test(s)) {
+      s = "'" + s;
+    }
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+
+  function downloadCsv(filename, headers, rows) {
+    const lines = [headers.map(h => formatCsvCell(h, false)).join(',')];
+    rows.forEach(r => {
+      lines.push(r.map((c, i) => formatCsvCell(c, headers[i] === 'Preferred Jersey Number')).join(','));
+    });
+    const csvContent = '\uFEFF' + lines.join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  async function send(action, data) {
+    // If running on GitHub Pages and bridge iframe is available, use postMessage bridge
+    if (window.location.origin === 'https://rahulbachute.github.io' && bridgeIframe && bridgeIframe.contentWindow) {
+      try {
+        const res = await new Promise((resolve, reject) => {
+          const reqId = String(Date.now()) + '_' + Math.random().toString(36).slice(2, 7);
+          const timer = setTimeout(() => {
+            window.removeEventListener('message', handler);
+            reject(new Error('Bridge request timed out.'));
+          }, 6000);
+          function handler(event) {
+            if (event.data && event.data.source === 'MPL_APPS_SCRIPT_BRIDGE' && String(event.data.id) === reqId) {
+              clearTimeout(timer);
+              window.removeEventListener('message', handler);
+              if (event.data.success) resolve(event.data.result);
+              else reject(new Error(event.data.message || 'Request failed.'));
+            }
+          }
+          window.addEventListener('message', handler);
+          bridgeIframe.contentWindow.postMessage({
+            source: 'MPL_GITHUB_ADMIN',
+            id: reqId,
+            action: action,
+            data: data
+          }, '*');
+        });
+        return res;
+      } catch (bridgeErr) {
+        // Fallback to direct fetch if bridge fails or times out
+      }
+    }
+
+    const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), 30000);
+    try {
+      const r = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(Object.assign({ action: action }, data)),
+        signal: ctrl.signal
+      });
+      if (!r.ok) throw new Error('Server error ' + r.status);
+      return await r.json();
+    } catch (err) {
+      if (err && err.name === 'AbortError') throw new Error('The server took too long to respond. Please try again.');
+      if (err instanceof TypeError) throw new Error('Could not reach the server. Check that the web app is deployed with access set to "Anyone".');
+      throw err;
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  openBtn.addEventListener('click', () => {
+    panel.hidden = false;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    pinInput.focus();
+  });
+
+  closeBtn.addEventListener('click', () => {
+    panel.hidden = true;
+    pinInput.value = '';
+    sessionPin = '';
+    allRows = [];
+    results.style.display = 'none';
+    msg.textContent = '';
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const pin = pinInput.value.trim();
+    if (!pin) return;
+    msg.textContent = 'Verifying PIN and loading registrations…';
+    results.style.display = 'none';
+    document.getElementById('organiserLoadBtn').disabled = true;
+
+    try {
+      const res = await send('list', { pin });
+      if (!res || !res.success) throw new Error(res && res.message || 'Access denied.');
+      sessionPin = pin;
+      allRows = res.rows || [];
+      msg.textContent = 'Access verified. ' + allRows.length + ' registration(s) loaded.';
+      results.style.display = 'block';
+      renderCurrentTab();
+    } catch (err) {
+      sessionPin = '';
+      allRows = [];
+      msg.textContent = err.message || 'Unable to verify access. Check deployment and try again.';
+    } finally {
+      document.getElementById('organiserLoadBtn').disabled = false;
+    }
+  });
+
+  // Tab switching
+  document.querySelectorAll('.mpl-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mpl-tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      activeTab = btn.dataset.tab;
+
+      document.getElementById('tabReview').style.display = activeTab === 'review' ? 'block' : 'none';
+      document.getElementById('tabVendor').style.display = activeTab === 'vendor' ? 'block' : 'none';
+      document.getElementById('tabAuction').style.display = activeTab === 'auction' ? 'block' : 'none';
+      document.getElementById('tabDeadline').style.display = activeTab === 'deadline' ? 'block' : 'none';
+
+      renderCurrentTab();
+    });
+  });
+
+  function renderCurrentTab() {
+    if (activeTab === 'review') renderReviewModule();
+    else if (activeTab === 'vendor') renderVendorModule();
+    else if (activeTab === 'auction') renderAuctionModule();
+    else if (activeTab === 'deadline') renderDeadlineModule();
+  }
+
+  // MODULE 1: Category-wise Player Registration Review
+  function renderReviewModule() {
+    const searchVal = (document.getElementById('reviewSearch').value || '').trim().toLowerCase();
+    const categoryVal = document.getElementById('reviewCategory').value;
+    const paymentVal = document.getElementById('reviewPayment').value;
+    const statusVal = document.getElementById('reviewStatus').value;
+
+    const filtered = allRows.filter(r => {
+      if (categoryVal && r.category !== categoryVal) return false;
+      if (statusVal && r.status !== statusVal) return false;
+      const payInfo = getPaymentStatusInfo(r);
+      if (paymentVal && payInfo.key !== paymentVal) return false;
+      if (searchVal) {
+        const text = [r.name, r.whatsAppMobile, r.cricHeroesMobile, r.phone, r.registrationId, r.wing, r.flat, r.email, r.transaction].join(' ').toLowerCase();
+        if (!text.includes(searchVal)) return false;
+      }
+      return true;
+    });
+
+    // Render KPIs
+    const counts = { total: allRows.length, confirmed: 0, verified: 0, pending: 0, rejected: 0, exempt: 0 };
+    allRows.forEach(r => {
+      if (r.status === 'Confirmed') counts.confirmed++;
+      else if (r.status === 'Payment Verified') counts.verified++;
+      else if (r.status === 'Rejected') counts.rejected++;
+      else counts.pending++;
+      if (r.isMccMember === 'Yes' || r.paymentExemption === 'MCC member exemption' || String(r.registrationFee) === '0') counts.exempt++;
+    });
+
+    document.getElementById('reviewKpiBar').innerHTML = [
+      { label: 'Total Players', num: counts.total, cls: '' },
+      { label: 'Confirmed', num: counts.confirmed, cls: 'kpi-lime' },
+      { label: 'Payment Verified', num: counts.verified, cls: 'kpi-lime' },
+      { label: 'Pending Review', num: counts.pending, cls: 'kpi-accent' },
+      { label: 'Rejected', num: counts.rejected, cls: '' },
+      { label: 'Fee Exempt', num: counts.exempt, cls: '' }
+    ].map(k => '<div class="mpl-kpi-card ' + k.cls + '"><div class="mpl-kpi-num">' + k.num + '</div><div class="mpl-kpi-lbl">' + k.label + '</div></div>').join('');
+
+    const wrap = document.getElementById('reviewTableWrap');
+    if (!filtered.length) {
+      wrap.innerHTML = '<div class="mpl-empty-msg">No player registrations match the selected filters.</div>';
+      return;
+    }
+
+    let out = '<table class="mpl-table"><thead><tr>' +
+      ['Ref / ID', 'Submitted', 'Player Name', 'Wing / Flat', 'Mobile (WA / CH)', 'Gender', 'DOB', 'Age', 'Category', 'Fee', 'Payment Evidence', 'Payment Status', 'Review Status', 'Action']
+      .map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
+
+    filtered.forEach(r => {
+      const pay = getPaymentStatusInfo(r);
+      const feeText = (r.registrationFee === '0' || r.registrationFee === 0) ? '₹0' : (r.registrationFee ? '₹' + r.registrationFee : '₹700');
+      let evidence = '—';
+      if (r.isMccMember === 'Yes' || r.paymentExemption === 'MCC member exemption') {
+        evidence = '<span style="color:#1e40af">MCC Member: ' + esc(r.memberName || 'Listed') + '</span>';
+      } else if (r.transaction) {
+        evidence = 'UPI: <code>' + esc(r.transaction) + '</code>';
+        if (r.paymentProofUrl) evidence += ' · <a href="' + esc(r.paymentProofUrl) + '" target="_blank" rel="noopener">Proof ↗</a>';
+      }
+
+      out += '<tr>' +
+        '<td><span style="font-family:monospace;font-weight:600">' + esc(r.registrationId) + '</span></td>' +
+        '<td><small>' + esc(r.timestamp) + '</small></td>' +
+        '<td><strong>' + esc(r.name) + '</strong></td>' +
+        '<td>' + esc(r.wing + ' / ' + r.flat) + '</td>' +
+        '<td>' +
+          (r.whatsAppMobile || r.phone ? '<div><span style="font-size:11px;font-weight:700;color:var(--turf)">WA:</span> <a href="tel:' + esc(r.whatsAppMobile || r.phone) + '">' + esc(r.whatsAppMobile || r.phone) + '</a></div>' : '<div><span style="font-size:11px;color:#999">WA: —</span></div>') +
+          (r.cricHeroesMobile ? '<div style="margin-top:2px"><span style="font-size:11px;font-weight:700;color:#c1272d">CH:</span> <a href="tel:' + esc(r.cricHeroesMobile) + '">' + esc(r.cricHeroesMobile) + '</a></div>' : '<div style="margin-top:2px"><span style="font-size:11px;color:#999">CH: —</span></div>') +
+        '</td>' +
+        '<td>' + esc(r.gender) + '</td>' +
+        '<td>' + (r.dob ? esc(r.dob) : '<span style="color:#999">—</span>') + '</td>' +
+        '<td>' + (r.age ? esc(r.age) + ' yrs' : '—') + '</td>' +
+        '<td><small>' + esc(r.category) + '</small></td>' +
+        '<td><strong>' + feeText + '</strong></td>' +
+        '<td><small>' + evidence + '</small></td>' +
+        '<td><span class="mpl-badge ' + pay.badgeClass + '">' + pay.label + '</span></td>' +
+        '<td><select class="mpl-select" style="padding:4px 6px;font-size:12px" id="mpl-status-' + Number(r.rowNumber) + '">' +
+          ['Pending', 'Payment Verified', 'Confirmed', 'Rejected'].map(s => '<option value="' + s + '"' + (r.status === s ? ' selected' : '') + '>' + s + '</option>').join('') +
+        '</select></td>' +
+        '<td><button type="button" class="mpl-btn mpl-btn-outline mpl-btn-sm mpl-save-btn" data-row="' + Number(r.rowNumber) + '">Save</button></td>' +
+      '</tr>';
+    });
+
+    out += '</tbody></table>';
+    wrap.innerHTML = out;
+
+    wrap.querySelectorAll('.mpl-save-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const row = Number(btn.dataset.row);
+        const sel = document.getElementById('mpl-status-' + row);
+        const newStatus = sel.value;
+        btn.disabled = true;
+        btn.textContent = '…';
+        msg.textContent = 'Updating status for row ' + row + '…';
+        try {
+          const res = await send('update', { pin: sessionPin, rowNumber: row, status: newStatus });
+          if (!res || !res.success) throw new Error(res && res.message || 'Status update failed.');
+          const matchRow = allRows.find(x => Number(x.rowNumber) === row);
+          if (matchRow) matchRow.status = newStatus;
+          msg.textContent = 'Status updated to "' + newStatus + '" for ' + (res.registrationId || 'registration') + '.';
+          renderReviewModule();
+        } catch (err) {
+          msg.textContent = err.message || 'Could not update status.';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Save';
+        }
+      });
+    });
+  }
+
+  // MODULE 2: T-Shirt Vendor List
+  function renderVendorModule() {
+    const genderVal = document.getElementById('vendorGender').value;
+    const sizeVal = document.getElementById('vendorSize').value;
+    const catVal = document.getElementById('vendorCategory').value;
+    const sortVal = document.getElementById('vendorSort').value;
+
+    let filtered = allRows.filter(r => {
+      if (genderVal && r.gender !== genderVal) return false;
+      if (sizeVal && r.size !== sizeVal) return false;
+      if (catVal && r.category !== catVal) return false;
+      return true;
+    });
+
+    // Sorting
+    filtered.sort((a, b) => {
+      if (sortVal === 'name') return (a.name || '').localeCompare(b.name || '');
+      if (sortVal === 'size') return (a.size || '').localeCompare(b.size || '');
+      if (sortVal === 'category') return (a.category || '').localeCompare(b.category || '');
+      return Number(a.rowNumber) - Number(b.rowNumber);
+    });
+
+    // Size tally summary
+    const sizeTally = {};
+    filtered.forEach(r => {
+      const s = r.size || 'Unspecified';
+      sizeTally[s] = (sizeTally[s] || 0) + 1;
+    });
+
+    let summaryHtml = '<span style="font-weight:700;font-size:.85rem;color:var(--turf)">Production Total: ' + filtered.length + ' jerseys · </span>';
+    Object.keys(sizeTally).sort().forEach(sz => {
+      summaryHtml += '<span class="mpl-size-pill">' + esc(sz) + ': <strong>' + sizeTally[sz] + '</strong></span>';
+    });
+    document.getElementById('vendorSizeSummary').innerHTML = summaryHtml;
+
+    const wrap = document.getElementById('vendorTableWrap');
+    if (!filtered.length) {
+      wrap.innerHTML = '<div class="mpl-empty-msg">No vendor records match the selected filters.</div>';
+      return;
+    }
+
+    let out = '<table class="mpl-table"><thead><tr>' +
+      ['S.No', 'Registration ID', 'Player Full Name', 'Jersey Name', 'Gender', 'Category', 'Jersey Size', 'Preferred Jersey Number']
+      .map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
+
+    filtered.forEach((r, idx) => {
+      out += '<tr>' +
+        '<td>' + (idx + 1) + '</td>' +
+        '<td><span style="font-family:monospace;font-weight:600">' + esc(r.registrationId) + '</span></td>' +
+        '<td><strong>' + esc(r.name) + '</strong></td>' +
+        '<td>' + esc(r.jerseyName || '—') + '</td>' +
+        '<td>' + esc(r.gender) + '</td>' +
+        '<td><small>' + esc(r.category) + '</small></td>' +
+        '<td><span class="mpl-badge badge-confirmed" style="font-size:.85rem">' + esc(r.size || '—') + '</span></td>' +
+        '<td><strong style="font-size:1.05rem;color:var(--turf2)">' + esc(r.jerseyNumber) + '</strong></td>' +
+      '</tr>';
+    });
+
+    out += '</tbody></table>';
+    wrap.innerHTML = out;
+  }
+
+  // MODULE 3: Auction Player Information Directory
+  function renderAuctionModule() {
+    const searchVal = (document.getElementById('auctionSearch').value || '').trim().toLowerCase();
+    const catVal = document.getElementById('auctionCategory').value;
+    const skillVal = document.getElementById('auctionSkill').value;
+
+    const filtered = allRows.filter(r => {
+      if (catVal && r.category !== catVal) return false;
+      if (skillVal === 'allrounder' && (!r.allrounder || r.allrounder === 'NA')) return false;
+      if (skillVal === 'batter' && (r.batter !== 'Opener' && r.batter !== 'Middle Order')) return false;
+      if (skillVal === 'bowler' && (r.bowler !== 'Excellent' && r.bowler !== 'Average')) return false;
+      if (searchVal) {
+        const text = [r.name, r.registrationId, r.jerseyName].join(' ').toLowerCase();
+        if (!text.includes(searchVal)) return false;
+      }
+      return true;
+    });
+
+    const area = document.getElementById('auctionContentArea');
+    if (!filtered.length) {
+      area.innerHTML = '<div class="mpl-empty-msg">No players match the filter criteria.</div>';
+      return;
+    }
+
+    if (auctionViewMode === 'grid') {
+      let out = '<div class="mpl-auction-grid">';
+      filtered.forEach(r => {
+        const thumbUrl = getDriveThumbnailUrl(r.photoUrl);
+        const role = deriveRoleSummary(r);
+
+        out += '<div class="mpl-player-card">' +
+          '<div class="mpl-card-top">' +
+            '<div class="mpl-card-photo-wrap">' +
+              '<img class="mpl-card-photo" src="' + (thumbUrl ? esc(thumbUrl) : FALLBACK_AVATAR) + '" alt="' + esc(r.name) + '" onerror="this.onerror=null;this.src=\'' + FALLBACK_AVATAR + '\';">' +
+            '</div>' +
+            '<div class="mpl-card-info">' +
+              '<h3 class="mpl-card-name">' + esc(r.name) + '</h3>' +
+              '<div class="mpl-card-reg">' + esc(r.registrationId) + '</div>' +
+              '<span class="mpl-card-badge">' + (r.age ? esc(r.age) + ' yrs' : 'Age —') + ' · ' + esc(r.gender) + '</span>' +
+              (r.photoUrl ? '<br><a class="mpl-drive-link" href="' + esc(r.photoUrl) + '" target="_blank" rel="noopener">Open Drive File ↗</a>' : '') +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="mpl-role-summary">' + esc(role) + '</div>' +
+            '<div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">' + esc(r.category) + (r.jerseyNumber ? ' · Jersey: ' + esc(r.jerseyName || '—') + ' (#' + esc(r.jerseyNumber) + ')' : '') + '</div>' +
+          '</div>' +
+          '<div class="mpl-skills-box">' +
+            '<div class="mpl-skill-row"><span class="mpl-skill-label">Batter:</span><span class="mpl-skill-val">' + esc(r.batter || 'Not specified') + '</span></div>' +
+            '<div class="mpl-skill-row"><span class="mpl-skill-label">Bowler:</span><span class="mpl-skill-val">' + esc(r.bowler || 'Not specified') + '</span></div>' +
+            '<div class="mpl-skill-row"><span class="mpl-skill-label">All-Rounder:</span><span class="mpl-skill-val">' + esc(r.allrounder || 'NA') + '</span></div>' +
+            '<div class="mpl-skill-row"><span class="mpl-skill-label">Fielding:</span><span class="mpl-skill-val">' + esc(r.fielding || 'Not specified') + '</span></div>' +
+          '</div>' +
+        '</div>';
+      });
+      out += '</div>';
+      area.innerHTML = out;
+    } else {
+      let out = '<div class="mpl-table-wrap"><table class="mpl-table"><thead><tr>' +
+        ['Ref ID', 'Player Name', 'Age', 'Gender', 'Category', 'Jersey', 'Role Summary', 'Batter', 'Bowler', 'All-Rounder', 'Fielding']
+        .map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
+
+      filtered.forEach(r => {
+        out += '<tr>' +
+          '<td><small style="font-family:monospace">' + esc(r.registrationId) + '</small></td>' +
+          '<td><strong>' + esc(r.name) + '</strong></td>' +
+          '<td>' + (r.age ? esc(r.age) + ' yrs' : '—') + '</td>' +
+          '<td>' + esc(r.gender) + '</td>' +
+          '<td><small>' + esc(r.category) + '</small></td>' +
+          '<td>' + esc((r.jerseyName || '—') + (r.jerseyNumber ? ' #' + r.jerseyNumber : '')) + '</td>' +
+          '<td><strong>' + esc(deriveRoleSummary(r)) + '</strong></td>' +
+          '<td>' + esc(r.batter) + '</td>' +
+          '<td>' + esc(r.bowler) + '</td>' +
+          '<td>' + esc(r.allrounder) + '</td>' +
+          '<td>' + esc(r.fielding) + '</td>' +
+        '</tr>';
+      });
+
+      out += '</tbody></table></div>';
+      area.innerHTML = out;
+    }
+  }
+
+  // Filter Event Listeners
+  ['reviewSearch', 'reviewCategory', 'reviewPayment', 'reviewStatus'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', () => renderReviewModule());
+  });
+
+  ['vendorGender', 'vendorSize', 'vendorCategory', 'vendorSort'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => renderVendorModule());
+  });
+
+  ['auctionSearch', 'auctionCategory', 'auctionSkill'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', () => renderAuctionModule());
+  });
+
+  // View Mode Buttons for Auction
+  document.getElementById('auctionViewGridBtn').addEventListener('click', () => {
+    auctionViewMode = 'grid';
+    document.getElementById('auctionViewGridBtn').style.background = 'var(--turf)';
+    document.getElementById('auctionViewGridBtn').style.color = '#fff';
+    document.getElementById('auctionViewTableBtn').style.background = '#fff';
+    document.getElementById('auctionViewTableBtn').style.color = 'var(--ink)';
+    renderAuctionModule();
+  });
+
+  document.getElementById('auctionViewTableBtn').addEventListener('click', () => {
+    auctionViewMode = 'table';
+    document.getElementById('auctionViewTableBtn').style.background = 'var(--turf)';
+    document.getElementById('auctionViewTableBtn').style.color = '#fff';
+    document.getElementById('auctionViewGridBtn').style.background = '#fff';
+    document.getElementById('auctionViewGridBtn').style.color = 'var(--ink)';
+    renderAuctionModule();
+  });
+
+  // Reset Buttons
+  document.getElementById('reviewResetBtn').addEventListener('click', () => {
+    document.getElementById('reviewSearch').value = '';
+    document.getElementById('reviewCategory').value = '';
+    document.getElementById('reviewPayment').value = '';
+    document.getElementById('reviewStatus').value = '';
+    renderReviewModule();
+  });
+
+  document.getElementById('vendorResetBtn').addEventListener('click', () => {
+    document.getElementById('vendorGender').value = '';
+    document.getElementById('vendorSize').value = '';
+    document.getElementById('vendorCategory').value = '';
+    document.getElementById('vendorSort').value = 'name';
+    renderVendorModule();
+  });
+
+  document.getElementById('auctionResetBtn').addEventListener('click', () => {
+    document.getElementById('auctionSearch').value = '';
+    document.getElementById('auctionCategory').value = '';
+    document.getElementById('auctionSkill').value = '';
+    renderAuctionModule();
+  });
+
+  // Print Buttons
+  document.getElementById('vendorPrintBtn').addEventListener('click', () => window.print());
+  document.getElementById('auctionPrintBtn').addEventListener('click', () => window.print());
+
+  // CSV Export Handlers
+  document.getElementById('reviewExportBtn').addEventListener('click', () => {
+    const searchVal = (document.getElementById('reviewSearch').value || '').trim().toLowerCase();
+    const categoryVal = document.getElementById('reviewCategory').value;
+    const paymentVal = document.getElementById('reviewPayment').value;
+    const statusVal = document.getElementById('reviewStatus').value;
+
+    const filtered = allRows.filter(r => {
+      if (categoryVal && r.category !== categoryVal) return false;
+      if (statusVal && r.status !== statusVal) return false;
+      const payInfo = getPaymentStatusInfo(r);
+      if (paymentVal && payInfo.key !== paymentVal) return false;
+      if (searchVal) {
+        const text = [r.name, r.whatsAppMobile, r.cricHeroesMobile, r.phone, r.registrationId, r.wing, r.flat, r.email, r.transaction].join(' ').toLowerCase();
+        if (!text.includes(searchVal)) return false;
+      }
+      return true;
+    });
+
+    const headers = [
+      'Registration ID', 'Submission Timestamp', 'Participant Full Name', 'Wing', 'Flat Number',
+      'WhatsApp Mobile Number', 'CricHeroes Mobile Number', 'Email', 'Gender', 'Date of Birth', 'Age as of 15 Nov 2026', 'Category',
+      'Registration Fee', 'Payment Exemption', 'UPI Transaction ID', 'Payment Status', 'Registration Review Status',
+      'Jersey Name', 'Preferred Jersey Number', 'Jersey Size', 'Batter Skill', 'Bowler Skill', 'All-Rounder Skill', 'Fielding Skill'
+    ];
+
+    const rows = filtered.map(r => [
+      r.registrationId, r.timestamp, r.name, r.wing, r.flat,
+      r.whatsAppMobile || r.phone || '', r.cricHeroesMobile || '', r.email, r.gender, r.dob || '', r.age, r.category,
+      r.registrationFee, r.paymentExemption, r.transaction, getPaymentStatusInfo(r).label, r.status,
+      r.jerseyName, r.jerseyNumber, r.size, r.batter, r.bowler, r.allrounder, r.fielding
+    ]);
+
+    downloadCsv('MPL_2026_Registration_Review.csv', headers, rows);
+  });
+
+  document.getElementById('vendorExportBtn').addEventListener('click', () => {
+    const genderVal = document.getElementById('vendorGender').value;
+    const sizeVal = document.getElementById('vendorSize').value;
+    const catVal = document.getElementById('vendorCategory').value;
+    const sortVal = document.getElementById('vendorSort').value;
+
+    let filtered = allRows.filter(r => {
+      if (genderVal && r.gender !== genderVal) return false;
+      if (sizeVal && r.size !== sizeVal) return false;
+      if (catVal && r.category !== catVal) return false;
+      return true;
+    });
+
+    filtered.sort((a, b) => {
+      if (sortVal === 'name') return (a.name || '').localeCompare(b.name || '');
+      if (sortVal === 'size') return (a.size || '').localeCompare(b.size || '');
+      if (sortVal === 'category') return (a.category || '').localeCompare(b.category || '');
+      return Number(a.rowNumber) - Number(b.rowNumber);
+    });
+
+    const headers = [
+      'Serial Number', 'Registration ID', 'Player Full Name', 'Jersey Name',
+      'Gender', 'Tournament Category', 'Jersey Size', 'Preferred Jersey Number'
+    ];
+
+    const rows = filtered.map((r, idx) => [
+      idx + 1, r.registrationId, r.name, r.jerseyName || '',
+      r.gender, r.category, r.size, r.jerseyNumber
+    ]);
+
+    downloadCsv('MPL_2026_TShirt_Vendor_List.csv', headers, rows);
+  });
+
+  document.getElementById('auctionExportBtn').addEventListener('click', () => {
+    const searchVal = (document.getElementById('auctionSearch').value || '').trim().toLowerCase();
+    const catVal = document.getElementById('auctionCategory').value;
+    const skillVal = document.getElementById('auctionSkill').value;
+
+    const filtered = allRows.filter(r => {
+      if (catVal && r.category !== catVal) return false;
+      if (skillVal === 'allrounder' && (!r.allrounder || r.allrounder === 'NA')) return false;
+      if (skillVal === 'batter' && (r.batter !== 'Opener' && r.batter !== 'Middle Order')) return false;
+      if (skillVal === 'bowler' && (r.bowler !== 'Excellent' && r.bowler !== 'Average')) return false;
+      if (searchVal) {
+        const text = [r.name, r.registrationId, r.jerseyName].join(' ').toLowerCase();
+        if (!text.includes(searchVal)) return false;
+      }
+      return true;
+    });
+
+    const headers = [
+      'Registration ID', 'Player Full Name', 'Age as of 15 Nov 2026', 'Gender',
+      'Tournament Category', 'Jersey Name', 'Preferred Jersey Number',
+      'Role Summary', 'Batter Skill', 'Bowler Skill', 'All-Rounder Skill', 'Fielding Skill'
+    ];
+
+    const rows = filtered.map(r => [
+      r.registrationId, r.name, r.age, r.gender,
+      r.category, r.jerseyName || '', r.jerseyNumber,
+      deriveRoleSummary(r), r.batter, r.bowler, r.allrounder, r.fielding
+    ]);
+
+    downloadCsv('MPL_2026_Auction_Player_Directory.csv', headers, rows);
+  });
+
+  // MODULE 4: Registration Deadline & Form Controls
+  let currentDeadlineConfig = null;
+
+  async function loadDeadlineConfig(force) {
+    if (currentDeadlineConfig && !force) return currentDeadlineConfig;
+    const saveMsg = document.getElementById('deadlineSaveMsg');
+    if (saveMsg) saveMsg.textContent = 'Loading current settings…';
+    try {
+      const res = await send('getDeadline', { pin: sessionPin });
+      if (res && res.success) {
+        currentDeadlineConfig = res;
+        applyPublicDeadlineUI(res);
+        if (saveMsg) saveMsg.textContent = '';
+        return res;
+      }
+      throw new Error(res && res.message || 'Could not load registration settings.');
+    } catch (err) {
+      if (saveMsg) saveMsg.textContent = 'Failed to load: ' + (err.message || err);
+      return null;
+    }
+  }
+
+  async function renderDeadlineModule() {
+    const badge = document.getElementById('deadlineStatusBadge');
+    const statusText = document.getElementById('deadlineCurrentStatusText');
+    const dateInput = document.getElementById('deadlineDateInput');
+    const openSelect = document.getElementById('deadlineIsOpenSelect');
+    const customMsgInput = document.getElementById('deadlineCustomMessage');
+
+    badge.className = 'mpl-badge badge-pending';
+    badge.textContent = 'Fetching…';
+    statusText.textContent = 'Fetching current registration settings from Apps Script…';
+
+    const cfg = await loadDeadlineConfig(false);
+    if (!cfg) {
+      badge.className = 'mpl-badge badge-missing';
+      badge.textContent = 'Error';
+      statusText.textContent = 'Unable to fetch current configuration. Please check network/bridge connection.';
+      return;
+    }
+
+    dateInput.value = cfg.deadlineDate || '2026-11-10';
+    openSelect.value = cfg.isOpen ? 'true' : 'false';
+    customMsgInput.value = cfg.customMessage || '';
+
+    const displayDate = cfg.formattedDeadline || cfg.deadlineDate || '10 November 2026';
+    if (cfg.effectivelyOpen) {
+      badge.className = 'mpl-badge badge-verified';
+      badge.textContent = '● OPEN';
+      statusText.textContent = 'Registrations are currently ACTIVE. Accepting submissions until ' + displayDate + ' (23:59:59 IST).';
+    } else if (!cfg.isOpen) {
+      badge.className = 'mpl-badge badge-missing';
+      badge.textContent = '● MANUALLY CLOSED';
+      statusText.textContent = 'Registrations are MANUALLY CLOSED by organisers. Online submissions are blocked.';
+    } else {
+      badge.className = 'mpl-badge badge-missing';
+      badge.textContent = '● DEADLINE PASSED';
+      statusText.textContent = 'Registration deadline (' + displayDate + ') has passed. Online submissions are closed.';
+    }
+  }
+
+  document.getElementById('deadlineSettingsForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const saveBtn = document.getElementById('saveDeadlineBtn');
+    const saveMsg = document.getElementById('deadlineSaveMsg');
+    const dateVal = document.getElementById('deadlineDateInput').value;
+    const openVal = document.getElementById('deadlineIsOpenSelect').value === 'true';
+    const customMsgVal = document.getElementById('deadlineCustomMessage').value.trim();
+
+    if (!dateVal) {
+      alert('Please choose a valid deadline date.');
+      return;
+    }
+
+    saveBtn.disabled = true;
+    saveMsg.style.color = 'var(--muted)';
+    saveMsg.textContent = 'Saving settings to Google Apps Script…';
+
+    try {
+      const res = await send('setDeadline', {
+        pin: sessionPin,
+        deadlineDate: dateVal,
+        isOpen: openVal,
+        customMessage: customMsgVal
+      });
+
+      if (!res || !res.success) {
+        throw new Error(res && res.message || 'Failed to save settings.');
+      }
+
+      currentDeadlineConfig = res;
+      applyPublicDeadlineUI(res);
+      await renderDeadlineModule();
+
+      saveMsg.style.color = '#166534';
+      saveMsg.textContent = '✓ Settings updated successfully!';
+      setTimeout(() => { if (saveMsg.textContent.includes('✓')) saveMsg.textContent = ''; }, 6000);
+      alert('Registration controls updated successfully.\n\nDeadline: ' + (res.formattedDeadline || res.deadlineDate) + '\nStatus: ' + (res.effectivelyOpen ? 'Accepting Registrations' : 'Registrations Closed'));
+    } catch (err) {
+      saveMsg.style.color = '#991b1b';
+      saveMsg.textContent = 'Error: ' + (err.message || err);
+      alert('Could not update registration controls: ' + (err.message || err));
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  document.getElementById('reloadDeadlineBtn').addEventListener('click', async () => {
+    await loadDeadlineConfig(true);
+    await renderDeadlineModule();
+  });
+
+  // Public Deadline Status Enforcement
+  async function checkPublicDeadline() {
+    try {
+      const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), 8000);
+      try {
+        const url = API + (API.includes('?') ? '&' : '?') + 'view=deadline';
+        const res = await fetch(url, { signal: ctrl.signal });
+        if (res.ok) {
+          const cfg = await res.json();
+          if (cfg && cfg.success) {
+            applyPublicDeadlineUI(cfg);
+            return;
+          }
+        }
+      } finally {
+        clearTimeout(t);
+      }
+    } catch (e) {
+      // Direct GET fallback or timeout
+    }
+  }
+
+  function applyPublicDeadlineUI(cfg) {
+    if (!cfg) return;
+    const banner = document.getElementById('publicClosingBanner');
+    const notice = document.getElementById('registrationStatusNotice');
+    const ctaBtn = document.getElementById('ctaRegisterBtn');
+    const displayDate = cfg.formattedDeadline || '10 November 2026';
+
+    if (!cfg.effectivelyOpen) {
+      if (banner) banner.textContent = 'Registrations closed on ' + displayDate;
+      if (notice) {
+        notice.textContent = cfg.customMessage || ('Notice: Registrations for MPL-2026 closed on ' + displayDate + '. Online registration submissions are no longer being accepted.');
+        notice.style.display = 'block';
+      }
+      if (ctaBtn) {
+        ctaBtn.textContent = 'Registrations Closed (' + displayDate + ')';
+        ctaBtn.style.background = '#64748b';
+        ctaBtn.style.borderColor = '#64748b';
+        ctaBtn.style.cursor = 'not-allowed';
+        ctaBtn.setAttribute('aria-disabled', 'true');
+        ctaBtn.onclick = function(e) {
+          e.preventDefault();
+          alert(cfg.customMessage || ('Registrations for MPL-2026 closed on ' + displayDate + '. For any queries, please contact tournament organisers.'));
+        };
+      }
+    } else {
+      if (banner) banner.textContent = 'Registrations closes on ' + displayDate;
+      if (notice) notice.style.display = 'none';
+      if (ctaBtn) {
+        ctaBtn.textContent = 'Register Now ↗';
+        ctaBtn.style.background = '';
+        ctaBtn.style.borderColor = '';
+        ctaBtn.style.cursor = 'pointer';
+        ctaBtn.removeAttribute('aria-disabled');
+        ctaBtn.onclick = null;
+      }
+    }
+  }
+
+  // Execute public deadline check on initial page load
+  checkPublicDeadline();
+
 })();
 </script>
 
