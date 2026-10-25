@@ -402,6 +402,35 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
     return url;
   }
 
+  // Auction tiers from the organiser's MCC roster. Keep tournament category separate.
+  const MCC_PLAYER_CATEGORIES = {
+    Captain: ['Sanjay Chopane', 'Yogesh Choudhari', 'Shankar Gawade', 'Namdeo Padwal', 'Dnyaneshwar Shingare', 'Aniruddha W', 'Babasaheb Rakshe', 'Vasudev Joshi'],
+    Platinum: ['Hemant Surwase', 'Bhupendra Bhamare', 'Sunil Patil', 'Satish Kawale', 'Pravin Mule', 'Nilesh Gosavi', 'Kaustubh Mule', 'Sandip Pawar', 'Santosh Karnavat', 'Mayur Bhosale', 'Rahul Doke', 'Akash Thube', 'Milind Dusane', 'Vijaynand Narvekar', 'Vinay Gacchi', 'Sanjay Arali', 'Saurabh Bedis', 'Sunil Jadhav', 'Rahul Bachute', 'Mangesh Sathe', 'Yogesh Kambale', 'Anil Mhatre', 'Sandesh Sawant', 'Sujay Khire'],
+    Gold: ['Mandar Navangul', 'Pushkar Kshtramade', 'Swapnil Shah', 'Milind Desai', 'Manish Jain', 'Santosh Chavan', 'Shrivishnu Bhagwat', 'Nikhil Lunawat', 'Vikram Bande', 'Samar Desahpande', 'Santosh Kumbhar', 'Abhinandan Pachore', 'Sameer Mhatre', 'Sunil Mandhania', 'Rajendra Muthal', 'Dr Ganesh Bahirwade'],
+    Silver: ['Mayur Bhadkamkar', 'Rishabh Khinvasara', 'Swapnil Khinvasara', 'Mrinal Srivastava', 'Mukesh Sharma', 'Leon Dsouza', 'Jinay Gudia', 'Satish Sathe', 'Ashish Bade', 'Suhas Lunkad', 'Pragyan Dani', 'Rahul Chavan', 'Sanjay Garad']
+  };
+
+  function normalizePlayerName(name) {
+    return String(name || '').normalize('NFKC').toLowerCase().trim()
+      .replace(/^(?:(?:dr|mr|mrs|ms|shri)\.?\s+)+/, '')
+      .replace(/[.\u0027\u2019]/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  const mccPlayerCategoryByName = new Map(
+    Object.entries(MCC_PLAYER_CATEGORIES).flatMap(([category, names]) =>
+      names.map(name => [normalizePlayerName(name), category]))
+  );
+
+  function derivePlayerCategory(r) {
+    const isMccMember = String(r.isMccMember || '').trim().toLowerCase() === 'yes' ||
+      r.paymentExemption === 'MCC member exemption';
+    const listedCategory = mccPlayerCategoryByName.get(normalizePlayerName(r.memberName)) ||
+      mccPlayerCategoryByName.get(normalizePlayerName(r.name));
+    if (listedCategory) return listedCategory;
+    if (isMccMember) return 'Unassigned';
+    return r.category === "Men's - 31 yrs and above" ? 'Silver' : '';
+  }
+
   function getPaymentStatusInfo(r) {
     const isExempt = (r.isMccMember === 'Yes' || r.paymentExemption === 'MCC member exemption' || String(r.registrationFee) === '0');
     if (isExempt) {
@@ -564,7 +593,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
       const res = await send('list', { pin });
       if (!res || !res.success) throw new Error(res && res.message || 'Access denied.');
       sessionPin = pin;
-      allRows = res.rows || [];
+      allRows = (res.rows || []).map(r => ({ ...r, playerCategory: derivePlayerCategory(r) }));
       msg.textContent = 'Access verified. ' + allRows.length + ' registration(s) loaded.';
       results.style.display = 'block';
       renderCurrentTab();
@@ -814,6 +843,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
             '<div class="mpl-card-info">' +
               '<h3 class="mpl-card-name">' + esc(r.name) + '</h3>' +
               '<div class="mpl-card-reg">' + esc(r.registrationId) + '</div>' +
+              (r.playerCategory ? '<div class="mpl-card-reg">Player Category: ' + esc(r.playerCategory) + '</div>' : '') +
               '<span class="mpl-card-badge">' + (r.age ? esc(r.age) + ' yrs' : 'Age —') + ' · ' + esc(r.gender) + '</span>' +
               (r.photoUrl ? '<br><a class="mpl-drive-link" href="' + esc(r.photoUrl) + '" target="_blank" rel="noopener">Open Drive File ↗</a>' : '') +
             '</div>' +
@@ -838,7 +868,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
       area.innerHTML = out;
     } else {
       let out = '<div class="mpl-table-wrap"><table class="mpl-table"><thead><tr>' +
-        ['Ref ID', 'Player Name', 'Age', 'Gender', 'Category', 'Jersey', 'Role Summary', 'Batter', 'Bowler', 'All-Rounder', 'Fielding', 'Action']
+        ['Ref ID', 'Player Name', 'Age', 'Gender', 'Category', 'Player Category', 'Jersey', 'Role Summary', 'Batter', 'Bowler', 'All-Rounder', 'Fielding', 'Action']
         .map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>';
 
       filtered.forEach(r => {
@@ -848,6 +878,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
           '<td>' + (r.age ? esc(r.age) + ' yrs' : '—') + '</td>' +
           '<td>' + esc(r.gender) + '</td>' +
           '<td><small>' + esc(r.category) + '</small></td>' +
+          '<td>' + esc(r.playerCategory || '') + '</td>' +
           '<td>' + esc((r.jerseyName || '—') + (r.jerseyNumber ? ' #' + r.jerseyNumber : '')) + '</td>' +
           '<td><strong>' + esc(deriveRoleSummary(r)) + '</strong></td>' +
           '<td>' + esc(r.batter) + '</td>' +
@@ -1043,14 +1074,14 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
       'Registration ID', 'Player Full Name', 'Age as of 15 Nov 2026', 'Gender',
       'Tournament Category', 'Jersey Name', 'Preferred Jersey Number',
       'Role Summary', 'Batter Skill', 'Bowler Skill', 'All-Rounder Skill', 'Fielding Skill',
-      'Player Photo Google Drive Link'
+      'Player Photo Google Drive Link', 'Player Category'
     ];
 
     const rows = filtered.map(r => [
       r.registrationId, r.name, r.age, r.gender,
       r.category, r.jerseyName || '', r.jerseyNumber,
       deriveRoleSummary(r), r.batter, r.bowler, r.allrounder, r.fielding,
-      r.photoUrl || ''
+      r.photoUrl || '', derivePlayerCategory(r)
     ]);
 
     downloadCsv('MPL_2026_Auction_Player_Directory.csv', headers, rows);
