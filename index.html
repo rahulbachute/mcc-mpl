@@ -427,7 +427,7 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
     const listedCategory = mccPlayerCategoryByName.get(normalizePlayerName(r.memberName)) ||
       mccPlayerCategoryByName.get(normalizePlayerName(r.name));
     if (listedCategory) return listedCategory;
-    if (isMccMember) return 'Unassigned';
+    if (isMccMember) return 'Silver';
     return r.category === "Men's - 31 yrs and above" ? 'Silver' : '';
   }
 
