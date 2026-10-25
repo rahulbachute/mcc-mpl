@@ -1042,13 +1042,15 @@ main{max-width:1140px;margin:28px auto;padding:0 20px 40px;display:grid;grid-tem
     const headers = [
       'Registration ID', 'Player Full Name', 'Age as of 15 Nov 2026', 'Gender',
       'Tournament Category', 'Jersey Name', 'Preferred Jersey Number',
-      'Role Summary', 'Batter Skill', 'Bowler Skill', 'All-Rounder Skill', 'Fielding Skill'
+      'Role Summary', 'Batter Skill', 'Bowler Skill', 'All-Rounder Skill', 'Fielding Skill',
+      'Player Photo Google Drive Link'
     ];
 
     const rows = filtered.map(r => [
       r.registrationId, r.name, r.age, r.gender,
       r.category, r.jerseyName || '', r.jerseyNumber,
-      deriveRoleSummary(r), r.batter, r.bowler, r.allrounder, r.fielding
+      deriveRoleSummary(r), r.batter, r.bowler, r.allrounder, r.fielding,
+      r.photoUrl || ''
     ]);
 
     downloadCsv('MPL_2026_Auction_Player_Directory.csv', headers, rows);
